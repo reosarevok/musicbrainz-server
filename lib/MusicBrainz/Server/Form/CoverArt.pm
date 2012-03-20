@@ -16,12 +16,6 @@ has_field 'type_id' => (
     multiple  => 1,
 );
 
-has_field 'position' => (
-    type      => '+MusicBrainz::Server::Form::Field::Integer',
-    required  => 1,
-    default => 1,
-);
-
 sub options_type_id { 
     my $self = shift;
 

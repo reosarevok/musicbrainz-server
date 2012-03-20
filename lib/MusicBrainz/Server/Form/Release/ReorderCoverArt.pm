@@ -1,23 +1,16 @@
-package MusicBrainz::Server::Form::Release::AddCoverArt;
+package MusicBrainz::Server::Form::Release::ReorderCoverArt;
 
 use HTML::FormHandler::Moose;
-extends 'MusicBrainz::Server::Form::CoverArt';
+extends 'MusicBrainz::Server::Form';
 with 'MusicBrainz::Server::Form::Role::Edit';
 
-has '+name' => ( default => 'add-cover-art' );
+has '+name' => ( default => 'reorder-cover-art' );
 
-sub edit_field_names { qw( id ) }
+has_field 'artwork' => ( type => 'Repeatable' );
+has_field 'artwork.id' => ( type => '+MusicBrainz::Server::Form::Field::Integer' );
+has_field 'artwork.position' => ( type => '+MusicBrainz::Server::Form::Field::Integer' );
 
-has_field 'id' => (
-    type      => '+MusicBrainz::Server::Form::Field::Integer',
-    required  => 1,
-);
-
-has_field 'position' => (
-    type      => '+MusicBrainz::Server::Form::Field::Integer',
-    required  => 1,
-    default => 1,
-);
+sub edit_field_names { qw( artwork ) }
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
