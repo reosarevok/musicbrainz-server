@@ -50,4 +50,23 @@ $(document).ready (function() {
         return false;
     });
 
+    $('.annotation-collapse').each(function(){
+        if ($(this).height() > 100) {
+            $(this).removeClass('annotation-collapse');
+            $(this).addClass('annotation-collapsed');
+            $(this).after('<p><a href="javascript:void(0)" class="annotation-toggle">Show more...</a></p>');
+        }
+    });
+
+    $(".annotation-toggle").click(function(){
+        if ($(this).parent().prev().hasClass('annotation-collapsed')) {
+            $(this).parent().prev().removeClass('annotation-collapsed');
+            $(this).parent().prev().addClass('annotation-collapse');
+            $(this).text('Show less...');
+        } else {
+            $(this).parent().prev().removeClass('annotation-collapse');
+            $(this).parent().prev().addClass('annotation-collapsed');
+            $(this).text('Show more...');
+        }
+    });
 });
