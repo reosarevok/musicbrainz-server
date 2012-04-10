@@ -44,8 +44,7 @@ MB.Control.ReleaseTrack = function (parent, $track, $artistcredit) {
      * render enters the supplied data into the form fields for this track.
      */
     self.render = function (data) {
-        self.position (data.position);
-
+        self.$position.text (data.position)
         self.$title.val (data.name);
         if (self.getDuration () === null || !self.parent.hasToc ())
         {
@@ -123,8 +122,6 @@ MB.Control.ReleaseTrack = function (parent, $track, $artistcredit) {
         self.$moveDown.unbind ('click.mb');
         self.$moveUp.unbind ('click.mb');
 
-        console.log ("fix these for up/down arrows.");
-        // self.$position.attr ('disabled', 'disabled');
         self.$length.attr ('disabled', 'disabled');
         self.$row.find ("input.remove-track").hide ();
 
@@ -518,7 +515,7 @@ MB.Control.ReleaseDisc = function (parent, $disc) {
         }
 
         var clear_title = true;
-        self.updateDiscTitle (clear_title);
+        self.parent.updateDiscTitle (clear_title);
     };
 
     self.getReleaseArtist = function () {
@@ -1107,6 +1104,8 @@ MB.Control.ReleaseTracklist = function () {
 };
 
 $('document').ready (function () {
-    MB.Control.release_tracklist = MB.Control.ReleaseTracklist ();
+    if ($('li.current input').attr ("name") == "step_tracklist") {
+        MB.Control.release_tracklist = MB.Control.ReleaseTracklist ();
+    };
 });
 
