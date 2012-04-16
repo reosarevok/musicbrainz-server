@@ -14,6 +14,10 @@ sub search : Path('')
 {
     my ($self, $c) = @_;
 
+    # Backwards compatibility with existing URLs
+    $c->req->query_params->{method} = 'direct'
+        if ($c->req->query_params->{direct} // '') eq 'on';
+
     $c->req->query_params->{type} = 'recording'
         if exists $c->req->query_params->{type} && $c->req->query_params->{type} eq 'track';
 
@@ -22,7 +26,8 @@ sub search : Path('')
 
     # The form should really be responsible for this, but I can't see a way
     # to make the field optional, but always have a value
-    $c->req->query_params->{method} ||= 'indexed';
+    $c->req->query_params->{method} ||= 'indexed'
+        if $c->req->query_params->{query};
 
     my $form = $c->stash->{sidebar_search};
     $c->stash( form => $form );
