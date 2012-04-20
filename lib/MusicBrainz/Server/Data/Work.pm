@@ -40,7 +40,7 @@ sub _table_join_name {
 sub _columns
 {
     return 'work.id, work.gid, work.type AS type_id, name.name, work.comment,
-            work.edits_pending, work.last_updated';
+            work.edits_pending, work.last_updated, work.language AS language_id';
 }
 
 sub _id_column
@@ -194,6 +194,7 @@ sub _hash_to_row
     my ($self, $work, $names) = @_;
     my $row = hash_to_row($work, {
         type => 'type_id',
+        language => 'language_id',
         map { $_ => $_ } qw( comment )
     });
 
