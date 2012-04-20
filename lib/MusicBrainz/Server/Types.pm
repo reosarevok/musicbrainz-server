@@ -29,7 +29,7 @@ subtype AutoEditorElectionStatus,
 
 subtype VoteOption,
     as Int,
-    where { $_ >= $VOTE_ABSTAIN && $_ <= $VOTE_YES };
+    where { $_ >= $VOTE_ABSTAIN && $_ <= $VOTE_APPROVE };
 
 subtype EditStatus,
     as Int,
@@ -43,7 +43,7 @@ subtype Quality,
 
 =head1 NAME
 
-MusicBrainz::Server::Constants - general Moose types and constants
+MusicBrainz::Server::Types - general Moose types and constants
 
 =head1 TYPES
 

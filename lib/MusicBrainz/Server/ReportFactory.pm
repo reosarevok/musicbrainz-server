@@ -27,7 +27,6 @@ my @all = qw(
     NoScript
     PartOfSetRelationships
     PossibleCollaborations
-    RecordingsCreativeCommonsRelationships
     RecordingsWithEarliestReleaseRelationships
     ReleasesWithUnlikelyLanguageScript
     ReleasedTooEarly
@@ -66,7 +65,6 @@ use MusicBrainz::Server::Report::NoLanguage;
 use MusicBrainz::Server::Report::NoScript;
 use MusicBrainz::Server::Report::PartOfSetRelationships;
 use MusicBrainz::Server::Report::PossibleCollaborations;
-use MusicBrainz::Server::Report::RecordingsCreativeCommonsRelationships;
 use MusicBrainz::Server::Report::RecordingsWithEarliestReleaseRelationships;
 use MusicBrainz::Server::Report::ReleasesWithUnlikelyLanguageScript;
 use MusicBrainz::Server::Report::ReleasedTooEarly;
