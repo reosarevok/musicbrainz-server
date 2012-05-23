@@ -73,7 +73,7 @@ after 'load' => sub
     }
 
     # FIXME: replace this with a proper Net::CoverArtArchive::CoverArt::Front object.
-    my $prefix = DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $release->gid . "/";
+    my $prefix = DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $release->gid;
     $c->stash->{release_artwork} = {
         image => $prefix.'/front',
         small_thumbnail => $prefix.'/front-250'
@@ -100,7 +100,8 @@ after 'load' => sub
 };
 
 # Stuff that has the side bar and thus needs to display collection information
-after [qw( show collections details discids tags relationships )] => sub {
+after [qw( cover_art add_cover_art edit_cover_art reorder_cover_art
+           show collections details discids tags relationships )] => sub {
     my ($self, $c) = @_;
 
     my $release = $c->stash->{release};
@@ -419,17 +420,25 @@ sub add_cover_art : Chained('load') PathPart('add-cover-art') RequireAuth
         $c->detach;
     }
 
+    my @artwork = @{ $c->model ('CoverArtArchive')->find_available_artwork($entity->gid) };
+
+    my $count = 1;
+    my @positions = map {
+        { id => $_->id, position => $count++ }
+    } @artwork;
+
     my $id = $c->model('CoverArtArchive')->fresh_id;
     $c->stash({
         id => $id,
         index_url => DBDefs::COVER_ART_ARCHIVE_DOWNLOAD_PREFIX . "/release/" . $entity->gid . "/",
-        images => $c->model ('CoverArtArchive')->find_available_artwork($entity->gid)
+        images => \@artwork
     });
 
     my $form = $c->form(
         form => 'Release::AddCoverArt',
         item => {
-            id => $id
+            id => $id,
+            position => $count
         }
     );
     if ($c->form_posted && $form->submitted_and_valid($c->req->params)) {
@@ -667,9 +676,9 @@ sub edit_cover_art : Chained('load') PathPart('edit-cover-art') Args(1) Edit Req
             edit_type => $EDIT_RELEASE_EDIT_COVER_ART,
             release => $entity,
             artwork_id => $artwork->id,
-            old_types => [ @type_ids ],
+            old_types => [ grep { defined $_ && looks_like_number($_) } @type_ids ],
             old_comment => $artwork->comment,
-            new_types => $form->field ("type_id")->value,
+            new_types => [ grep { defined $_ && looks_like_number($_) } @{ $form->field ("type_id")->value } ],
             new_comment => $form->field('comment')->value || '',
         );
 

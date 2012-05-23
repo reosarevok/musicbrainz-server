@@ -88,6 +88,11 @@ ALTER TABLE artist_gid_redirect
    FOREIGN KEY (new_id)
    REFERENCES artist(id);
 
+ALTER TABLE artist_ipi
+   ADD CONSTRAINT artist_ipi_fk_artist
+   FOREIGN KEY (artist)
+   REFERENCES artist(id);
+
 ALTER TABLE artist_meta
    ADD CONSTRAINT artist_meta_fk_id
    FOREIGN KEY (id)
@@ -256,6 +261,16 @@ ALTER TABLE edit_work
    REFERENCES work(id)
    ON DELETE CASCADE;
 
+ALTER TABLE editor
+   ADD CONSTRAINT editor_fk_gender
+   FOREIGN KEY (gender)
+   REFERENCES gender(id);
+
+ALTER TABLE editor
+   ADD CONSTRAINT editor_fk_country
+   FOREIGN KEY (country)
+   REFERENCES country(id);
+
 ALTER TABLE editor_collection
    ADD CONSTRAINT editor_collection_fk_editor
    FOREIGN KEY (editor)
@@ -270,6 +285,16 @@ ALTER TABLE editor_collection_release
    ADD CONSTRAINT editor_collection_release_fk_release
    FOREIGN KEY (release)
    REFERENCES release(id);
+
+ALTER TABLE editor_language
+   ADD CONSTRAINT editor_language_fk_editor
+   FOREIGN KEY (editor)
+   REFERENCES editor(id);
+
+ALTER TABLE editor_language
+   ADD CONSTRAINT editor_language_fk_language
+   FOREIGN KEY (language)
+   REFERENCES language(id);
 
 ALTER TABLE editor_preference
    ADD CONSTRAINT editor_preference_fk_editor
@@ -819,6 +844,11 @@ ALTER TABLE label_annotation
 ALTER TABLE label_gid_redirect
    ADD CONSTRAINT label_gid_redirect_fk_new_id
    FOREIGN KEY (new_id)
+   REFERENCES label(id);
+
+ALTER TABLE label_ipi
+   ADD CONSTRAINT label_ipi_fk_label
+   FOREIGN KEY (label)
    REFERENCES label(id);
 
 ALTER TABLE label_meta

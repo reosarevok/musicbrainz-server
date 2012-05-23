@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE OR REPLACE VIEW cover_art_archive.index_listing AS
+CREATE OR REPLACE VIEW index_listing AS
 SELECT cover_art.*,
   (edit.close_time IS NOT NULL) AS approved,
   coalesce(cover_art.id = (SELECT id FROM cover_art_archive.cover_art_type

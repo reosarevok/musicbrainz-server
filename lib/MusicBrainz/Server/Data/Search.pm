@@ -13,6 +13,7 @@ use MusicBrainz::Server::Entity::ArtistType;
 use MusicBrainz::Server::Entity::Barcode;
 use MusicBrainz::Server::Entity::Gender;
 use MusicBrainz::Server::Entity::ISRC;
+use MusicBrainz::Server::Entity::ISWC;
 use MusicBrainz::Server::Entity::LabelType;
 use MusicBrainz::Server::Entity::Language;
 use MusicBrainz::Server::Entity::Link;
@@ -84,6 +85,7 @@ sub search
                 entity.type,
                 entity.begin_date_year, entity.begin_date_month, entity.begin_date_day,
                 entity.end_date_year, entity.end_date_month, entity.end_date_day,
+                entity.ended,
                 $extra_columns
                 MAX(rank) AS rank
             FROM
@@ -102,7 +104,7 @@ sub search
             GROUP BY
                 $extra_columns entity.id, entity.gid, entity.comment, aname.name, asort_name.name, entity.type,
                 entity.begin_date_year, entity.begin_date_month, entity.begin_date_day,
-                entity.end_date_year, entity.end_date_month, entity.end_date_day
+                entity.end_date_year, entity.end_date_month, entity.end_date_day, entity.ended
             ORDER BY
                 rank DESC, sort_name, name
             OFFSET
@@ -126,6 +128,9 @@ sub search
         $extra_columns .= 'entity.language, entity.script, entity.country, entity.barcode,
             entity.date_year, entity.date_month, entity.date_day,'
             if ($type eq 'release');
+
+        $extra_columns .= 'entity.language AS language_id,'
+            if ($type eq 'work');
 
         my ($join_sql, $where_sql)
             = ("JOIN ${type} entity ON r.id = entity.name", '');
@@ -486,23 +491,39 @@ sub schema_fixup
         $data->{'artist_credit'} = MusicBrainz::Server::Entity::ArtistCredit->new( { names => \@credits } );
     }
 
-    if ($type eq 'work' && exists $data->{relationships}) {
-        my %relationship_map = partition_by { $_->entity1->gid }
-            @{ $data->{relationships} };
+    if ($type eq 'work') {
+        if (exists $data->{relationships}) {
+            my %relationship_map = partition_by { $_->entity1->gid }
+                @{ $data->{relationships} };
 
-        $data->{writers} = [
-            map {
-                my @relationships = @{ $relationship_map{$_} };
-                {
-                    entity => $relationships[0]->entity1,
-                    roles  => [ map { $_->link->type->name } @relationships ]
-                }
-            } keys %relationship_map
-        ];
-    }
+            $data->{writers} = [
+                map {
+                    my @relationships = @{ $relationship_map{$_} };
+                    {
+                        entity => $relationships[0]->entity1,
+                            roles  => [ map { $_->link->type->name } @relationships ]
+                        }
+                } keys %relationship_map
+            ];
+        }
 
-    if($type eq 'work' && exists $data->{type}) {
-        $data->{type} = MusicBrainz::Server::Entity::WorkType->new( name => $data->{type} );
+        if(exists $data->{type}) {
+            $data->{type} = MusicBrainz::Server::Entity::WorkType->new( name => $data->{type} );
+        }
+
+        if (exists $data->{language}) {
+            $data->{language} = MusicBrainz::Server::Entity::Language->new({
+                iso_code_3 => $data->{language}
+            });
+        }
+
+        if(exists $data->{'iswc-list'}) {
+            $data->{iswcs} = [
+                map {
+                    MusicBrainz::Server::Entity::ISWC->new( iswc => $_ )
+                } @{ $data->{'iswc-list'}{iswc} }
+            ]
+        }
     }
 }
 

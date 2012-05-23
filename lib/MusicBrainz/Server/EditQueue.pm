@@ -3,7 +3,7 @@ package MusicBrainz::Server::EditQueue;
 use Moose;
 use Try::Tiny;
 use DBDefs;
-use MusicBrainz::Server::Constants qw( :expire_action :edit_status :editor );
+use MusicBrainz::Server::Constants qw( :expire_action :editor :edit_status );
 
 has 'c' => (
     is => 'ro',

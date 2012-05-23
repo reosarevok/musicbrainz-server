@@ -3,7 +3,7 @@ use Moose;
 use namespace::autoclean;
 use namespace::autoclean;
 
-use MusicBrainz::Server::Data::Utils qw( placeholders );
+use MusicBrainz::Server::Data::Utils qw( placeholders query_to_list );
 use MusicBrainz::Server::Constants qw( :edit_status :vote );
 use MusicBrainz::Server::Constants qw( $VARTIST_ID $EDITOR_MODBOT $EDITOR_FREEDB :quality );
 use MusicBrainz::Server::Data::Relationship;
@@ -11,6 +11,18 @@ use MusicBrainz::Server::Data::Relationship;
 with 'MusicBrainz::Server::Data::Role::Sql';
 
 sub _table { 'statistic' }
+
+sub all_events {
+    my ($self) = @_;
+
+    return [
+        query_to_list(
+            $self->sql,
+            sub { shift },
+            'SELECT * FROM statistic_event ORDER BY date ASC',
+        )
+    ];
+}
 
 sub fetch {
     my ($self, @names) = @_;
@@ -169,6 +181,84 @@ my %stats = (
             };
         },
     },
+    "count.release.status.statname.has_coverart" => {
+        DESC => "Count of releases with cover art, by status",
+        CALC => sub {
+            my ($self, $sql) = @_;
+
+            my $data = $sql->select_list_of_lists(
+                "SELECT
+                   coalesce(release_status.name, 'null'),
+                   count(DISTINCT cover_art.release)
+                 FROM cover_art_archive.cover_art
+                 JOIN release ON release.id = cover_art.release
+                 FULL OUTER JOIN release_status
+                   ON release_status.id = release.status
+                 GROUP BY coalesce(release_status.name, 'null')",
+            );
+
+            my %dist = map { @$_ } @$data;
+
+            +{
+                map {
+                    "count.release.status.".$_.".has_coverart" => $dist{$_}
+                } keys %dist
+            };
+        }
+    },
+    "count.release.type.typename.has_coverart" => {
+        DESC => "Count of releases with cover art, by release group type",
+        CALC => sub {
+            my ($self, $sql) = @_;
+
+            my $data = $sql->select_list_of_lists(
+                "SELECT
+                   coalesce(release_group_primary_type.name, 'null'),
+                   count(DISTINCT cover_art.release)
+                 FROM cover_art_archive.cover_art
+                 JOIN release ON release.id = cover_art.release
+                 JOIN release_group
+                   ON release.release_group = release_group.id
+                 FULL OUTER JOIN release_group_primary_type
+                   ON release_group_primary_type.id = release_group.type
+                 GROUP BY coalesce(release_group_primary_type.name, 'null')"
+            );
+
+            my %dist = map { @$_ } @$data;
+
+            +{
+                map {
+                    "count.release.type.".$_.".has_coverart" => $dist{$_}
+                } keys %dist
+            };
+        }
+    },
+    "count.release.format.fname.has_coverart" => {
+        DESC => "Count of releases with cover art, by medium format",
+        CALC => sub {
+            my ($self, $sql) = @_;
+
+            my $data = $sql->select_list_of_lists(
+                "SELECT
+                   coalesce(medium_format.name, 'null'),
+                   count(DISTINCT cover_art.release)
+                 FROM cover_art_archive.cover_art
+                 JOIN release ON release.id = cover_art.release
+                 JOIN medium ON medium.release = release.id
+                 FULL OUTER JOIN medium_format
+                   ON medium_format.id = medium.format
+                 GROUP BY coalesce(medium_format.name, 'null')",
+            );
+
+            my %dist = map { @$_ } @$data;
+
+            +{
+                map {
+                    "count.release.format.".$_.".has_coverart" => $dist{$_}
+                } keys %dist
+            };
+        }
+    },
     "count.coverart.per_release.Nimages" => {
         DESC => "Distribution of cover art images per release",
         CALC => sub {
@@ -250,6 +340,28 @@ my %stats = (
         DESC => "Count of all works",
         SQL => "SELECT COUNT(*) FROM work",
     },
+    "count.work.language" => {
+        DESC => "Distribution of works by lyrics language",
+        CALC => sub {
+            my ($self, $sql) = @_;
+
+            my $data = $sql->select_list_of_lists(
+                "SELECT COALESCE(l.iso_code_3::text, 'null'), COUNT(w.gid) AS count
+                FROM work w FULL OUTER JOIN language l
+                    ON w.language=l.id
+                GROUP BY l.iso_code_3
+                ",
+            );
+
+            my %dist = map { @$_ } @$data;
+
+            +{
+                map {
+                    "count.work.language.".$_ => $dist{$_}
+                } keys %dist
+            };
+        },
+    },
     "count.artistcredit" => {
         DESC => "Count of all artist credits",
         SQL => "SELECT COUNT(*) FROM artist_credit",
@@ -264,11 +376,11 @@ my %stats = (
     },
     "count.ipi.artist" => {
         DESC => "Count of artists with an IPI code",
-        SQL => "SELECT COUNT(*) FROM artist WHERE ipi_code IS NOT NULL",
+        SQL => "SELECT COUNT(DISTINCT artist) FROM artist_ipi",
     },
     "count.ipi.label" => {
         DESC => "Count of labels with an IPI code",
-        SQL => "SELECT COUNT(*) FROM label WHERE ipi_code IS NOT NULL",
+        SQL => "SELECT COUNT(DISTINCT label) FROM label_ipi",
     },
     "count.isrc.all" => {
         DESC => "Count of all ISRCs joined to recordings",

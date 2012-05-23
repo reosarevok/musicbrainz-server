@@ -89,6 +89,8 @@ requires 'Throwable';
 requires 'TryCatch';
 requires 'URI'                                        => '1.50';
 requires 'XML::Generator';
+requires 'XML::Parser::Lite'                          => '0.714';
+requires 'XML::RSS::Parser::Lite'                     => '0.10';
 requires 'XML::SemanticDiff'                          => '1.0000';
 requires 'XML::Simple'                                => '2.14';
 requires 'XML::XPath';
@@ -156,7 +158,7 @@ test_requires 'Test::Memory::Cycle';
 test_requires 'Test::Mock::Class';
 test_requires 'Test::Routine';
 test_requires 'Test::WWW::Selenium';
-test_requires 'Test::WWW::Selenium::Catalyst';
+test_requires 'Test::WWW::Selenium::Catalyst' => '0.07';
 test_requires 'Test::XPath';
 test_requires 'XML::Parser';
 

@@ -21,6 +21,7 @@ use MusicBrainz::Server::Validation qw( normalise_strings );
 
 use MooseX::Types::Moose qw( ArrayRef Maybe Str Int );
 use MooseX::Types::Structured qw( Dict Optional );
+use Scalar::Util qw( looks_like_number );
 
 use aliased 'MusicBrainz::Server::Entity::ReleaseGroup';
 
@@ -151,6 +152,10 @@ around initialize => sub
     }
     $opts{type_id} = delete $opts{primary_type_id};
 
+    $opts{secondary_type_ids} = [
+        grep { looks_like_number($_) } @{ $opts{secondary_type_ids} }
+    ] if $opts{secondary_type_ids};
+
     $self->$orig(%opts);
 };
 
@@ -198,7 +203,8 @@ sub _edit_hash
     $data = $self->merge_changes;
     $data->{artist_credit} = $self->c->model('ArtistCredit')->find_or_insert($data->{artist_credit})
         if (exists $data->{artist_credit});
-    $data->{primary_type_id} = delete $data->{type_id};
+    $data->{primary_type_id} = delete $data->{type_id}
+        if exists $data->{type_id};
     return $data;
 }
 

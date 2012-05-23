@@ -158,11 +158,29 @@ sub merge
     my ($self, $new_id, @old_ids) = @_;
     my $table = $self->table;
     my $type = $self->type;
-    $self->sql->do("DELETE FROM $table
-              WHERE name IN (SELECT name FROM $table WHERE $type = ?) AND
-                    $type IN (".placeholders(@old_ids).")", $new_id, @old_ids);
+
+    # Keep locales in the target merge, as there can only be one alias per locale
+    $self->sql->do(
+        "DELETE FROM $table WHERE $type = any(?) AND locale IS NOT NULL
+         AND (locale) IN (
+             SELECT locale FROM $table WHERE $type = ? AND locale IS NOT NULL
+         )",
+        \@old_ids, $new_id
+    );
+
+    $self->sql->do(
+        "DELETE FROM $table
+         WHERE $type = any(?) AND
+           (name, locale, $type) NOT IN (
+             SELECT DISTINCT ON (name, locale) name, locale, $type
+             FROM $table WHERE $type = any(?)
+           )",
+        [ $new_id, @old_ids ],
+        [ $new_id, @old_ids ]);
+
     $self->sql->do("UPDATE $table SET $type = ?
               WHERE $type IN (".placeholders(@old_ids).")", $new_id, @old_ids);
+
     $self->sql->do(
         "INSERT INTO $table (name, $type, sort_name)
             SELECT DISTINCT ON (old_entity.name) old_entity.name, new_entity.id, old_entity.name -- TODO: Use old_entity.sort_name, but works don't have this...
@@ -189,6 +207,12 @@ sub update
         my %names = $self->parent->find_or_insert_names($alias_hash->{name});
         $row{name} = $names{ $alias_hash->{name} };
     }
+
+    if (exists $alias_hash->{sort_name}) {
+        my %names = $self->parent->find_or_insert_names($alias_hash->{sort_name});
+        $row{sort_name} = $names{ $alias_hash->{sort_name} };
+    }
+
     add_partial_date_to_row(\%row, $alias_hash->{begin_date}, "begin_date")
         if exists $alias_hash->{begin_date};
     add_partial_date_to_row(\%row, $alias_hash->{end_date}, "end_date")
@@ -197,6 +221,23 @@ sub update
         if exists $row{type_id};
 
     $self->sql->update_row($table, \%row, { id => $alias_id });
+}
+
+sub exists {
+    my ($self, $alias) = @_;
+    my $name_table = $self->parent->name_table;
+    my $table = $self->table;
+    return $self->sql->select_single_value(
+        "SELECT EXISTS (
+             SELECT TRUE
+             FROM $table alias
+             JOIN $name_table n ON alias.name = n.id
+             WHERE n.name IS NOT DISTINCT FROM ?
+               AND locale IS NOT DISTINCT FROM ?
+               AND type IS NOT DISTINCT FROM ?
+               AND alias.id IS DISTINCT FROM ?
+         )", $alias->{name}, $alias->{locale}, $alias->{type_id}, $alias->{not_id}
+    );
 }
 
 no Moose;

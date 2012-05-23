@@ -38,6 +38,9 @@ our %EXPORT_TAGS = (
     election_vote => [
         qw( $ELECTION_VOTE_YES $ELECTION_VOTE_NO $ELECTION_VOTE_ABSTAIN )
     ],
+    vote => [
+        qw( $VOTE_NO $VOTE_ABSTAIN $VOTE_YES $VOTE_APPROVE )
+    ],
 );
 
 our @EXPORT_OK = (
