@@ -1391,7 +1391,7 @@ sub CanRemoveTrack
     my $havetracks = $self->_GetTrackNumbersHash;
 
     # Can't remove a track that's not there
-    $@ = l("There is no track {tracknum} on this album", { tracknum => $tracknum }), return 0
+    $@ = l("There is no track {tracknum} on this release", { tracknum => $tracknum }), return 0
         if defined $tracknum and not $havetracks->{$tracknum};
 
     # If we have no disc ids, or if we do, but they suggest a conflicting
@@ -1424,7 +1424,7 @@ sub CanRemoveTrack
     # Yes, if there's a track outside of the TOC range
     $@ = "", return 1 if grep { $_ < 1 or $_ > $fixtracks } keys %$havetracks;
     # Otherwise no
-    $@ = l("None of the tracks on this album are eligible for removal"), return 0;
+    $@ = l("None of the tracks on this release are eligible for removal"), return 0;
 }
 
 sub _GetTOCTracksHash
