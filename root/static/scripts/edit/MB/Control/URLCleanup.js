@@ -219,6 +219,12 @@ MB.constants.CLEANUPS = {
             return url.replace(/http:\/\/(.*)\.archive.org\/\d+\/items\/(.*)\/(.*)/, "http://www.archive.org/download/$2/$3");
         }
     },
+    blogspot: {
+        match: new RegExp("^(https?://)?(www\\.)?[^./]+\\.blogspot\\.([a-z]{2,3}\\.)?[a-z]{2,3}/?","i"),
+        clean: function(url) {
+            return url = url.replace(/(www\.)?([^.\/]+)\.blogspot\.([a-z]{2,3}\.)?[a-z]{2,3}(\/)?/, "$2.blogspot.com/");
+        }
+    },
     cdbaby: {
         match: new RegExp("^(https?://)?([^/]+\\.)?cdbaby\\.(com|name)","i"),
         clean: function(url) {

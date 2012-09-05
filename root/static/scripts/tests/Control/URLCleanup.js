@@ -187,6 +187,16 @@ MB.tests.URLCleanup.GuessType = function() {
                     'release'
                 ],
                 [
+                    'http://49swimmingpools.blogspot.fr/',
+                    'http://49swimmingpools.blogspot.com/',
+                    'artist'
+                ],
+                [
+                    'www.afroliciousoriginal.blogspot.pt',
+                    'afroliciousoriginal.blogspot.com/',
+                    'artist'
+                ],
+                [
                     'http://amzn.com/B000005SU4',
                     'http://www.amazon.com/gp/product/B000005SU4',
                     'release'
