@@ -456,6 +456,7 @@ sub TO_JSON {
         containment
         current_language
         current_language_html
+        date_collected
         entity
         hide_merge_helper
         jsonld_data
@@ -468,6 +469,7 @@ sub TO_JSON {
         release_artwork
         server_details
         server_languages
+        stats
         subscribed
         to_merge
         top_tags
