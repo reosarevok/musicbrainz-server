@@ -458,6 +458,7 @@ sub TO_JSON {
         current_language_html
         date_collected
         entity
+        format_stats
         hide_merge_helper
         jsonld_data
         last_replication_date
