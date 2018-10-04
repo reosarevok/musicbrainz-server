@@ -496,6 +496,7 @@ sub TO_JSON {
         top_recently_active_voters
         top_tags
         top_voters
+        types
         user_tags
         work_attribute_types
         work_types

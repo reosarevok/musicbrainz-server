@@ -552,7 +552,7 @@ declare type LanguageT = {|
 
 type LastUpdateRoleT = {|
   +last_updated: string,
-|}
+|};
 
 declare type LinkSearchablePropertyT = {|
   +entityType: string,
@@ -578,6 +578,7 @@ declare type LinkTypeInfoT = {|
   +gid: string,
   +hasDates: boolean,
   +id: number,
+  +longPhrase: string,
   +orderableDirection: number,
   +phrase: string,
   +reversePhrase: string,

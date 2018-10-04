@@ -165,18 +165,20 @@ sub build_type_info {
         } $root->all_attributes;
 
         my $result = {
-            id                  => $root->id,
-            gid                 => $root->gid,
-            phrase              => $root->l_link_phrase,
-            reversePhrase       => $root->l_reverse_link_phrase,
-            deprecated          => boolean_to_json($root->is_deprecated),
-            hasDates            => boolean_to_json($root->has_dates),
-            type0               => $root->entity0_type,
-            type1               => $root->entity1_type,
-            cardinality0        => $root->entity0_cardinality,
-            cardinality1        => $root->entity1_cardinality,
-            orderableDirection  => $root->orderable_direction,
-            childOrder          => $root->child_order,
+            id                 => $root->id,
+            gid                => $root->gid,
+            phrase             => $root->l_link_phrase,
+            reversePhrase      => $root->l_reverse_link_phrase,
+            deprecated         => boolean_to_json($root->is_deprecated),
+            hasDates           => boolean_to_json($root->has_dates),
+            type0              => $root->entity0_type,
+            type1              => $root->entity1_type,
+            cardinality0       => $root->entity0_cardinality,
+            cardinality1       => $root->entity1_cardinality,
+            orderableDirection => $root->orderable_direction,
+            childOrder         => $root->child_order,
+            name               => $root->name,
+            longPhrase         => $root->l_long_link_phrase,
         };
 
         $result->{description} = $root->l_description if $root->description;
