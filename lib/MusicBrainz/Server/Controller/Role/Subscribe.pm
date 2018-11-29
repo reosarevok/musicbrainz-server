@@ -3,6 +3,8 @@ use Moose::Role -traits => 'MooseX::MethodAttributes::Role::Meta::Role';
 use namespace::autoclean;
 
 use List::MoreUtils qw( part );
+use MusicBrainz::Server::Data::Utils qw( type_to_model );
+use MusicBrainz::Server::Plugin::Canonicalize qw ( replace_gid );
 
 sub subscribers : Chained('load') RequireAuth {
     my ($self, $c) = @_;
@@ -17,11 +19,20 @@ sub subscribers : Chained('load') RequireAuth {
     $public ||= [];
     $private ||= [];
 
-    $c->stash(
-        public_editors => $public,
-        private_editors => scalar @$private,
-        subscribed => $c->model($model)->subscription->check_subscription($c->user->id, $entity->id)
+    my %props = (
+        canonicalURL => MusicBrainz::Server::Plugin::Canonicalize::replace_gid($self, $c, $entity->gid),
+        entity => $entity,
+        privateEditors => scalar @$private,
+        publicEditors => $public,
+        subscribed => $c->model($model)->subscription->check_subscription($c->user->id, $entity->id),
     );
+
+     $c->stash(
+        component_path => $entity->entity_type . '/' . type_to_model($entity->entity_type) . 'Subscribers.js',
+        component_props => \%props,
+        current_view => 'Node',
+    );
+
 }
 
 1;
