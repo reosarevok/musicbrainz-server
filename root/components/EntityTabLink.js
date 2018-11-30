@@ -12,7 +12,7 @@ const EntityLink = require('../static/scripts/common/components/EntityLink');
 
 type Props = {|
   +content: string,
-  +entity: CoreEntityT,
+  +entity: CoreEntityT | CollectionT,
   +selected: boolean,
   +subPath: string,
 |};
