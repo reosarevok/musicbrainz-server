@@ -16,7 +16,22 @@ import loopParity from '../utility/loopParity';
 
 import {formatCount, formatPercentage, LinkSearchableProperty} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {FormatsStatsT} from './types';
+import type {StatsT} from './types';
+
+type FormatsStatsT = {|
+  +$c: CatalystContextT,
+  +dateCollected: string,
+  +formatStats: $ReadOnlyArray<FormatStatT>,
+  +stats: StatsT,
+|};
+
+type FormatStatT = {|
+  +entity: MediumFormatT | null,
+  +medium_count: number,
+  +medium_stat: string,
+  +release_count: number,
+  +release_stat: string,
+|};
 
 const Formats = ({$c, dateCollected, formatStats, stats}: FormatsStatsT) => (
   <StatisticsLayout fullWidth page="formats" title={l_statistics('Release/Medium Formats')}>

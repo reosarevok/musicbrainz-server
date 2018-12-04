@@ -17,7 +17,19 @@ import manifest from '../static/manifest';
 
 import {formatCount, LinkSearchableProperty} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {EditorsStatsT} from './types';
+
+type EditorsStatsT = {|
+  +dateCollected: string,
+  +topEditors: $ReadOnlyArray<EditorStatT>,
+  +topRecentlyActiveEditors: $ReadOnlyArray<EditorStatT>,
+  +topRecentlyActiveVoters: $ReadOnlyArray<EditorStatT>,
+  +topVoters: $ReadOnlyArray<EditorStatT>,
+|};
+
+type EditorStatT = {|
+  +count: number,
+  +entity: EditorT,
+|};
 
 const EditorStatsTable = withCatalystContext(({$c, countLabel, dataPoints, editorLabel, tableLabel}) => (
   <>
@@ -51,7 +63,6 @@ const EditorStatsTable = withCatalystContext(({$c, countLabel, dataPoints, edito
 ));
 
 const Editors = ({
-  $c,
   dateCollected,
   topEditors,
   topRecentlyActiveEditors,
@@ -80,4 +91,4 @@ const Editors = ({
   </StatisticsLayout>
 );
 
-export default withCatalystContext(Editors);
+export default Editors;

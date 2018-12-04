@@ -17,9 +17,27 @@ import {l_statistics} from '../static/scripts/common/i18n/statistics';
 import {withCatalystContext} from '../context';
 import loopParity from '../utility/loopParity';
 
-import type {LanguagesScriptsStatsT} from './types';
 import {formatCount, LinkSearchableProperty} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
+
+type LanguagesScriptsStatsT = {|
+  +$c: CatalystContextT,
+  +dateCollected: string,
+  +languageStats: $ReadOnlyArray<LanguageStatT>,
+  +scriptStats: $ReadOnlyArray<ScriptStatT>,
+|};
+
+type LanguageStatT = {|
+  +entity: LanguageT | null,
+  +releases: number,
+  +total: number,
+  +works: number,
+|};
+
+type ScriptStatT = {|
+  +count: number,
+  +entity: ScriptT | null,
+|};
 
 const LanguagesScripts = ({$c, dateCollected, languageStats, scriptStats}: LanguagesScriptsStatsT) => (
   <StatisticsLayout fullWidth page="languages-scripts" title={l_statistics('Languages and Scripts')}>

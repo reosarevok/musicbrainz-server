@@ -9,6 +9,7 @@
 
 import React from 'react';
 
+import {compare} from '../static/scripts/common/i18n';
 import {l_statistics} from '../static/scripts/common/i18n/statistics';
 import {withCatalystContext} from '../context';
 import manifest from '../static/manifest';
@@ -16,7 +17,23 @@ import formatEntityTypeName from '../static/scripts/common/utility/formatEntityT
 
 import {formatCount, formatPercentage} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {RelationshipsStatsT} from './types';
+import type {StatsT} from './types';
+
+export type RelationshipsStatsT = {|
+  +$c: CatalystContextT,
+  +dateCollected: string,
+  +stats: StatsT,
+  +types: {[string]: RelationshipTypeT},
+|};
+
+declare type RelationshipTypeT = {|
+  +entity_types: $ReadOnlyArray<string>,
+  +tree: {[string]: Array<LinkTypeInfoT>},
+|};
+
+function comparePhrases(a, b) {
+  return compare(a.longPhrase, b.longPhrase);
+}
 
 const TypeRows = withCatalystContext(({$c, base, indent, parent, stats, type}) => {
   return (
@@ -28,7 +45,7 @@ const TypeRows = withCatalystContext(({$c, base, indent, parent, stats, type}) =
         <td>{formatPercentage(stats.data[base + '.' + type.name + '.inclusive'] / stats.data[parent], 1, $c)}</td>
       </tr>
       {type.children ? (
-        type.children.sort((a, b) => a.longPhrase.localeCompare(b.longPhrase)).map((child) => (
+        type.children.sort(comparePhrases).map((child) => (
           <TypeRows base={base} indent={indent + 1} key={child.id} parent={base + '.' + type.name + '.inclusive'} stats={stats} type={child} />
         ))
       ) : null}
@@ -76,13 +93,11 @@ const Relationships = ({$c, dateCollected, stats, types}: RelationshipsStatsT) =
                   <td>{formatCount(stats.data['count.ar.links.' + typeKey], $c)}</td>
                   <td>{formatPercentage(stats.data['count.ar.links.' + typeKey] / stats.data['count.ar.links'], 1, $c)}</td>
                 </tr>
-                {Object.keys(type.tree).sort().map((child) => {
-                  console.log(type.tree);
-                  return (
-                  type.tree[child].sort((a, b) => a.longPhrase.localeCompare(b.longPhrase)).map((child2) => (
+                {Object.keys(type.tree).sort().map((child) => (
+                  type.tree[child].sort(comparePhrases).map((child2) => (
                     <TypeRows base={'count.ar.links.' + typeKey} indent={2} key={child2.id} parent={'count.ar.links.' + typeKey} stats={stats} type={child2} />
                   ))
-                );})}
+                ))}
               </>
             );
           })}
