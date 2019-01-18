@@ -89,7 +89,7 @@ const stats = {
     category: 'artist-other',
     color: '#ff0000',
     description: l('Artists with gender set to not applicable'),
-    label: l('Artists with gender set to not applicable'),
+    label: l('Gender Not Applicable'),
   },
   'count.artist.gender.null': {
     category: 'artist-other',
