@@ -52,9 +52,9 @@ type CoverArtTypeStatT = {|
 const nameOrNull = (name: string, defaultName: string) => {
   if (name === 'null') {
     return defaultName;
-  } else {
-    return l_statistics(name);
   }
+
+  return l_statistics(name);
 };
 
 const oneToTwentyNine = range(1, 30);

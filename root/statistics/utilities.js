@@ -10,7 +10,11 @@
 
 import React from 'react';
 
-export function formatPercentage(num: number, digits: number, $c: CatalystContextT) {
+export function formatPercentage(
+  num: number,
+  digits: number,
+  $c: CatalystContextT,
+) {
   return (num || 0).toLocaleString($c.stash.current_language,
     {maximumFractionDigits: digits, minimumFractionDigits: digits, style: 'percent'});
 }

@@ -36,7 +36,14 @@ function comparePhrases(a, b) {
   return compare(a.long_link_phrase, b.long_link_phrase);
 }
 
-const TypeRows = withCatalystContext(({$c, base, indent, parent, stats, type}) => {
+const TypeRows = withCatalystContext(({
+  $c,
+  base,
+  indent,
+  parent,
+  stats,
+  type,
+}) => {
   return (
     <>
       <tr>
@@ -54,7 +61,12 @@ const TypeRows = withCatalystContext(({$c, base, indent, parent, stats, type}) =
   );
 });
 
-const Relationships = ({$c, dateCollected, stats, types}: RelationshipsStatsT) => (
+const Relationships = ({
+  $c,
+  dateCollected,
+  stats,
+  types,
+}: RelationshipsStatsT) => (
   <StatisticsLayout fullWidth page="relationships" title={l_statistics('Relationships')}>
     {manifest.css('statistics')}
     <p>{l_statistics('Last updated: {date}',

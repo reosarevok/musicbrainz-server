@@ -49,7 +49,13 @@ const infoLinks = [
   {link: '/statistics/timeline/main', page: 'timeline', title: l_statistics('Timeline')},
 ];
 
-const StatisticsLayout = ({children, fullWidth, page, sidebar, title}: StatisticsLayoutPropsT) => {
+const StatisticsLayout = ({
+  children,
+  fullWidth,
+  page,
+  sidebar,
+  title,
+}: StatisticsLayoutPropsT) => {
   const htmlTitle = l_statistics('Database Statistics - {title}', {title: title});
   return fullWidth ? (
     <Layout fullWidth gettext_domains={['attributes', 'relationships', 'statistics']} title={htmlTitle}>

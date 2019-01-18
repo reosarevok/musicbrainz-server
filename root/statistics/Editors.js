@@ -31,7 +31,13 @@ type EditorStatT = {|
   +entity: EditorT,
 |};
 
-const EditorStatsTable = withCatalystContext(({$c, countLabel, dataPoints, editorLabel, tableLabel}) => (
+const EditorStatsTable = withCatalystContext(({
+  $c,
+  countLabel,
+  dataPoints,
+  editorLabel,
+  tableLabel,
+}) => (
   <>
     <h3>{tableLabel}</h3>
     <table className="tbl">

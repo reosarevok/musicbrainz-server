@@ -40,7 +40,12 @@ type ScriptStatT = {|
   +entity: ScriptT | null,
 |};
 
-const LanguagesScripts = ({$c, dateCollected, languageStats, scriptStats}: LanguagesScriptsStatsT) => (
+const LanguagesScripts = ({
+  $c,
+  dateCollected,
+  languageStats,
+  scriptStats,
+}: LanguagesScriptsStatsT) => (
   <StatisticsLayout fullWidth page="languages-scripts" title={l_statistics('Languages and Scripts')}>
     {manifest.css('statistics')}
     <p>{l_statistics('Last updated: {date}',
