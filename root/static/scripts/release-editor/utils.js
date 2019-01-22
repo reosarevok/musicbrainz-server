@@ -8,17 +8,18 @@
 // Original version Copyright (C) 2010 Nick Galbreath, and released under
 // the MIT license: http://opensource.org/licenses/MIT
 
-const ko = require('knockout');
-const _ = require('lodash');
+import ko from 'knockout';
+import _ from 'lodash';
 
-const {rstr_sha1} = require('../../lib/sha1/sha1');
-const {MAX_LENGTH_DIFFERENCE, MIN_NAME_SIMILARITY} = require('../common/constants');
+import {rstr_sha1} from '../../lib/sha1/sha1';
+import {MAX_LENGTH_DIFFERENCE, MIN_NAME_SIMILARITY} from '../common/constants';
 import escapeLuceneValue from '../common/utility/escapeLuceneValue';
-const request = require('../common/utility/request');
-const similarity = require('../edit/utility/similarity');
-const releaseEditor = require('./viewModel');
+import request from '../common/utility/request';
+import similarity from '../edit/utility/similarity';
 
-const utils = exports;
+import releaseEditor from './viewModel';
+
+const utils = {};
 
 releaseEditor.utils = utils;
 
@@ -213,3 +214,5 @@ function base64(s) {
 
     return x.join("");
 }
+
+export default utils;
