@@ -438,6 +438,14 @@ const CLEANUPS = {
       return id === LINK_TYPES.lyrics.work && /^http:\/\/animationsong\.com\/archives\/\d+\.html$/.test(url);
     },
   },
+  'animenewsnetwork': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?animenewsnetwork\.com\/encyclopedia\/(people|company).php\?id=([0-9]+).*$/, 'https://www.animenewsnetwork.com/encyclopedia/$1.php?id=$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?animenewsnetwork\\.com', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'anisongeneration': {
     clean: function (url) {
       return url.replace(/^(?:https?:\/\/)?(?:www\.)?anison\.info\/data\/(person|source|song)\/([0-9]+)\.html.*$/, 'http://anison.info/data/$1/$2.html');
@@ -805,19 +813,25 @@ const CLEANUPS = {
     match: [new RegExp('^(https?://)?(www\\.)?cdjapan\\.co\\.jp/(product|person)/', 'i')],
     type: LINK_TYPES.mailorder,
   },
-  'crowdfunding': {
+  'changetip': {
     clean: function (url) {
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?indiegogo\.com\/individuals\/(\d+)(?:[\/?#].*)?$/, 'https://www.indiegogo.com/individuals/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?indiegogo\.com\/projects\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.indiegogo.com/projects/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?kickstarter\.com\/profile\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.kickstarter.com/profile/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?kickstarter\.com\/projects\/(\d+)\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.kickstarter.com/projects/$1/$2');
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?changetip\.com\/tipme\/([^\/?#]+)(?:.*)?$/, 'https://www.changetip.com/tipme/$1');
+      url = url.replace(/^(?:https?:\/\/)?([^\/?#]+)\.tip\.me(?:[\/?#].*)?$/, 'https://www.changetip.com/tipme/$1');
       return url;
     },
     match: [
-      new RegExp('^(https?://)?(www\\.)?indiegogo\\.com/(individuals|projects)/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?kickstarter\\.com/(profile|projects)/', 'i'),
+      new RegExp('^(https?://)?(www\\.)?changetip\\.com/tipme/[^/?#]', 'i'),
+      new RegExp('^(https?://)?[^/?#]+\\.tip.me([/?#].*)?$', 'i'),
     ],
-    type: LINK_TYPES.crowdfunding,
+    type: LINK_TYPES.patronage,
+  },
+  'classicalarchives': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?classicalarchives\.com\/(album|artist|composer|ensemble|work)\/([^\/?#]+)(?:.*)?$/, 'https://www.classicalarchives.com/$1/$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?classicalarchives\\.com/(album|artist|composer|ensemble|work)/', 'i')],
+    type: LINK_TYPES.otherdatabases,
   },
   'dailymotion': {
     clean: function (url) {
@@ -878,6 +892,14 @@ const CLEANUPS = {
       }
       return false;
     },
+  },
+  'dhhu': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(www\.)?dhhu\.dk\/w\/(.*)+$/, 'http://www.dhhu.dk/w/$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?dhhu\\.dk', 'i')],
+    type: LINK_TYPES.otherdatabases,
   },
   'discographyentry': {
     match: [
@@ -965,6 +987,26 @@ const CLEANUPS = {
       return false;
     },
   },
+  'drip': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?d\.rip\/([^\/?#]+)(?:.*)?$/, 'https://d.rip/$1');
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?drip\.kickstarter.com\/([^\/?#]+)(?:.*)?$/, 'https://d.rip/$1');
+      return url;
+    },
+    match: [
+      new RegExp('^(https?://)?(www\\.)?d\\.rip/[^/?#]', 'i'),
+      new RegExp('^(https?://)?(www\\.)?drip\\.kickstarter.com/[^/?#]', 'i'),
+    ],
+    type: LINK_TYPES.patronage,
+  },
+  'ester': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?ester\.ee\/record=([^~]+)(?:.*)?$/, 'http://www.ester.ee/record=$1~S1*est');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?ester\\.ee/', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'facebook': {
     clean: function (url) {
       url = url.replace(/^(https?:\/\/)?([\w.-]*\.)?(facebook|fb)\.com(\/#!)?/, 'https://www.facebook.com');
@@ -995,6 +1037,14 @@ const CLEANUPS = {
       }
       return true;
     },
+  },
+  'flattr': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?flattr\.com\/profile\/([^\/?#]+)(?:.*)?$/, 'https://flattr.com/profile/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?flattr\\.com/profile/[^/?#]', 'i')],
+    type: LINK_TYPES.patronage,
   },
   'generasia': {
     clean: function (url) {
@@ -1059,6 +1109,14 @@ const CLEANUPS = {
       return false;
     },
   },
+  'ibdb': {
+    clean: function (url) {
+      url = url.replace(/^(https?:\/\/)?(www\.)?ibdb\.com/, 'https://www.ibdb.com');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?ibdb\\.com/', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'imdb': {
     clean: function (url) {
       return url.replace(/^https?:\/\/([^.]+\.)?imdb\.(com|de|it|es|fr|pt)\/([a-z]+\/[a-z0-9]+)(\/.*)*$/, 'https://www.imdb.com/$3/');
@@ -1088,6 +1146,15 @@ const CLEANUPS = {
   'imslp': {
     match: [new RegExp('^(https?://)?(www\\.)?imslp\\.org/', 'i')],
     type: _.defaults({}, LINK_TYPES.imslp, LINK_TYPES.score),
+  },
+  'indiegogo': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?indiegogo\.com\/individuals\/(\d+)(?:[\/?#].*)?$/, 'https://www.indiegogo.com/individuals/$1');
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?indiegogo\.com\/projects\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.indiegogo.com/projects/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?indiegogo\\.com/(individuals|projects)/', 'i')],
+    type: LINK_TYPES.crowdfunding,
   },
   'instagram': {
     clean: function (url) {
@@ -1221,6 +1288,23 @@ const CLEANUPS = {
       }
       return false;
     },
+  },
+  'kickstarter': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?kickstarter\.com\/profile\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.kickstarter.com/profile/$1');
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?kickstarter\.com\/projects\/(\d+)\/([\w\-]+)(?:[\/?#].*)?$/, 'https://www.kickstarter.com/projects/$1/$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?kickstarter\\.com/(profile|projects)/', 'i')],
+    type: LINK_TYPES.crowdfunding,
+  },
+  'kofi': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?ko-fi\.com\/([^\/?#]+)(?:.*)?$/, 'https://ko-fi.com/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?ko-fi.com/[^/?#]', 'i')],
+    type: LINK_TYPES.patronage,
   },
   'lastfm': {
     clean: function (url) {
@@ -1359,6 +1443,14 @@ const CLEANUPS = {
       return false;
     },
   },
+  'musiksammler': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?musik-sammler\.de\/(album|artist|media)\/([0-9a-z-]+)(?:[\/?#].*)?$/, 'https://www.musik-sammler.de/$1/$2/');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?musik-sammler\\.de/', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'musixmatch': {
     clean: function (url) {
       url = url.replace(/^(?:https?:\/\/)?(?:[^\/]+\.)?musixmatch\.com\/(artist)\/([^\/?#]+).*$/, 'https://www.musixmatch.com/$1/$2');
@@ -1451,6 +1543,14 @@ const CLEANUPS = {
     match: [new RegExp('^(https?://)?([^/]+\\.)?(last\\.fm|lastfm\\.(com\\.br|com\\.tr|at|com|de|es|fr|it|jp|pl|pt|ru|se))/([a-z]{2}/)?group/', 'i')],
     type: LINK_TYPES.onlinecommunity,
   },
+  'openlibrary': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(www\.)?openlibrary\.org\/(authors|books|works)\/(OL[0-9]+[AMW]\/)(.*)*$/, 'https://openlibrary.org/$2/$3');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?openlibrary\\.org', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'operabase': {
     clean: function (url) {
       return url.replace(/^(?:https?:\/\/)?(?:www\.)?operabase\.com\/a\/([^\/?#]+)\/([0-9]+).*$/, 'https://operabase.com/a/$1/$2');
@@ -1462,44 +1562,10 @@ const CLEANUPS = {
     },
   },
   'otherdatabases': {
-    clean: function (url) {
-      // Standardising ClassicalArchives.com
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?classicalarchives\.com\/(album|artist|composer|ensemble|work)\/([^\/?#]+)(?:.*)?$/, 'https://www.classicalarchives.com/$1/$2');
-      // Removing cruft from Worldcat URLs and standardising to https
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?worldcat\.org/, 'https://www.worldcat.org');
-      url = url.replace(/^https:\/\/www\.worldcat\.org(?:\/title\/[a-zA-Z0-9_-]+)?\/oclc\/([^&?]+)(?:.*)$/, 'https://www.worldcat.org/oclc/$1');
-      // Standardising IBDb not to use www
-      url = url.replace(/^(https?:\/\/)?(www\.)?ibdb\.com/, 'https://www.ibdb.com');
-      // Standardising ESTER to their default parameters
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?ester\.ee\/record=([^~]+)(?:.*)?$/, 'http://www.ester.ee/record=$1~S1*est');
-      // Standardising Trove
-      url = url.replace(/^(?:https?:\/\/)?trove\.nla\.gov\.au\/work\/([^\/?#]+)(?:.*)?$/, 'https://trove.nla.gov.au/work/$1');
-      url = url.replace(/^(?:https?:\/\/)?trove\.nla\.gov\.au\/people\/([^\/?#]+)(?:.*)?$/, 'https://nla.gov.au/nla.party-$1');
-      url = url.replace(/^(?:https?:\/\/)?nla\.gov\.au\/(nla\.party-|anbd\.bib-an)([^\/?#]+)(?:.*)?$/, 'https://nla.gov.au/$1$2');
-      // Standardising Musik-Sammler.de
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?musik-sammler\.de\/(album|artist|media)\/([0-9a-z-]+)(?:[\/?#].*)?$/, 'https://www.musik-sammler.de/$1/$2/');
-      // Standardising Rockens Danmarkskort
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?rockensdanmarkskort\.dk\/steder\/(.*)+$/, 'http://www.rockensdanmarkskort.dk/steder/$1');
-      // Standardising RIC
-      url = url.replace(/^(?:https?:\/\/)?(wiki|www)\.rockinchina\.com\/w\/(.*)+$/, 'http://www.rockinchina.com/w/$2');
-      // Standardising Rockipedia
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?rockipedia\.no\/(utgivelser|artister|plateselskap)\/(.+)\/.*$/, 'https://www.rockipedia.no/$1/$2/');
-      // Standardising DHHU
-      url = url.replace(/^(?:https?:\/\/)?(www\.)?dhhu\.dk\/w\/(.*)+$/, 'http://www.dhhu.dk/w/$2');
-      // Standardising Open Library
-      url = url.replace(/^(?:https?:\/\/)?(www\.)?openlibrary\.org\/(authors|books|works)\/(OL[0-9]+[AMW]\/)(.*)*$/, 'https://openlibrary.org/$2/$3');
-      // Standardising Anime News Network
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?animenewsnetwork\.com\/encyclopedia\/(people|company).php\?id=([0-9]+).*$/, 'https://www.animenewsnetwork.com/encyclopedia/$1.php?id=$2');
-      return url;
-    },
     match: [
-      new RegExp('^(https?://)?(www\\.)?classicalarchives\\.com/(album|artist|composer|ensemble|work)/', 'i'),
       new RegExp('^(https?://)?(www\\.)?rateyourmusic\\.com/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?worldcat\\.org/', 'i'),
       new RegExp('^(https?://)?(www\\.)?musicmoz\\.org/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?musik-sammler\\.de/', 'i'),
       new RegExp('^(https?://)?(www\\.)?discografia\\.dds\\.it/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?ester\\.ee/', 'i'),
       new RegExp('^(https?://)?(www\\.)?encyclopedisque\\.fr/', 'i'),
       new RegExp('^(https?://)?(www\\.)?discosdobrasil\\.com\\.br/', 'i'),
       new RegExp('^(https?://)?(www\\.)?isrc\\.ncl\\.edu\\.tw/', 'i'),
@@ -1507,17 +1573,9 @@ const CLEANUPS = {
       new RegExp('^(https?://)?(www\\.)?psydb\\.net/', 'i'),
       new RegExp('^(https?://)?(www\\.)?metal-archives\\.com/(bands?|albums|artists|labels)', 'i'),
       new RegExp('^(https?://)?(www\\.)?spirit-of-metal\\.com/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?ibdb\\.com/', 'i'),
       new RegExp('^(https?://)?(www\\.)?lortel\\.org/', 'i'),
       new RegExp('^(https?://)?(www\\.)?theatricalia\\.com/', 'i'),
       new RegExp('^(https?://)?(www\\.)?ocremix\\.org/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?(trove\\.)?nla\\.gov\\.au/', 'i'),
-      new RegExp('^(https?://)?(www\\.)?rockensdanmarkskort\\.dk', 'i'),
-      new RegExp('^(https?://)?((www|wiki)\\.)?rockinchina\\.com', 'i'),
-      new RegExp('^(https?://)?(www\\.)?dhhu\\.dk', 'i'),
-      new RegExp('^(https?://)?(www\\.)?openlibrary\\.org', 'i'),
-      new RegExp('^(https?://)?(www\\.)?animenewsnetwork\\.com', 'i'),
-      new RegExp('^(https?://)?(www\\.)?rockipedia\\.no', 'i'),
       new RegExp('^(https?://)?(www\\.)?whosampled\\.com', 'i'),
       new RegExp('^(https?://)?(www\\.)?maniadb\\.com', 'i'),
       new RegExp('^(https?://)?(www\\.)?imvdb\\.com', 'i'),
@@ -1554,31 +1612,21 @@ const CLEANUPS = {
     match: [new RegExp('^(https?://)?(www\\.)?ozon\\.ru/context/detail/id/', 'i')],
     type: LINK_TYPES.mailorder,
   },
-  'patronage': {
+  'patreon': {
     clean: function (url) {
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?changetip\.com\/tipme\/([^\/?#]+)(?:.*)?$/, 'https://www.changetip.com/tipme/$1');
-      url = url.replace(/^(?:https?:\/\/)?([^\/?#]+)\.tip\.me(?:[\/?#].*)?$/, 'https://www.changetip.com/tipme/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?flattr\.com\/profile\/([^\/?#]+)(?:.*)?$/, 'https://flattr.com/profile/$1');
       url = url.replace(/^((?:https?:\/\/)?(?:www\.)?patreon\.com\/user)\/(?:community|posts)(\?u=.*)$/, '$1$2');
       url = url.replace(/^(?:https?:\/\/)?(?:www\.)?patreon\.com\/((?:user\?u=)?[^\/?&#]+)(?:.*)?$/, 'https://www.patreon.com/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?paypal\.me\/([^\/?#]+)(?:.*)?$/, 'https://www.paypal.me/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:[^/]+\.)?tipeee\.com\/([^\/?#]+)(?:.*)?$/, 'https://www.tipeee.com/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?d\.rip\/([^\/?#]+)(?:.*)?$/, 'https://d.rip/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?drip\.kickstarter.com\/([^\/?#]+)(?:.*)?$/, 'https://d.rip/$1');
-      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?ko-fi\.com\/([^\/?#]+)(?:.*)?$/, 'https://ko-fi.com/$1');
       return url;
     },
-    match: [
-      new RegExp('^(https?://)?(www\\.)?changetip\\.com/tipme/[^/?#]', 'i'),
-      new RegExp('^(https?://)?[^/?#]+\\.tip.me([/?#].*)?$', 'i'),
-      new RegExp('^(https?://)?(www\\.)?flattr\\.com/profile/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(www\\.)?patreon\\.com/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(www\\.)?paypal\\.me/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(?:[^/]+\\.)?tipeee\\.com/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(www\\.)?d\\.rip/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(www\\.)?drip\\.kickstarter.com/[^/?#]', 'i'),
-      new RegExp('^(https?://)?(www\\.)?ko-fi.com/[^/?#]', 'i'),
-    ],
+    match: [new RegExp('^(https?://)?(www\\.)?patreon\\.com/[^/?#]', 'i')],
+    type: LINK_TYPES.patronage,
+  },
+  'paypalme': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?paypal\.me\/([^\/?#]+)(?:.*)?$/, 'https://www.paypal.me/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?paypal\\.me/[^/?#]', 'i')],
     type: LINK_TYPES.patronage,
   },
   'petitlyrics': {
@@ -1700,6 +1748,30 @@ const CLEANUPS = {
       }
       return false;
     },
+  },
+  'rockensdanmarkskort': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?rockensdanmarkskort\.dk\/steder\/(.*)+$/, 'http://www.rockensdanmarkskort.dk/steder/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?rockensdanmarkskort\\.dk', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
+  'rockinchina': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(wiki|www)\.rockinchina\.com\/w\/(.*)+$/, 'http://www.rockinchina.com/w/$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?((www|wiki)\\.)?rockinchina\\.com', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
+  'rockipedia': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?rockipedia\.no\/(utgivelser|artister|plateselskap)\/(.+)\/.*$/, 'https://www.rockipedia.no/$1/$2/');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?rockipedia\\.no', 'i')],
+    type: LINK_TYPES.otherdatabases,
   },
   'runeberg': {
     clean: function (url) {
@@ -1927,6 +1999,24 @@ const CLEANUPS = {
       return false;
     },
   },
+  'tipeee': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:[^/]+\.)?tipeee\.com\/([^\/?#]+)(?:.*)?$/, 'https://www.tipeee.com/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(?:[^/]+\\.)?tipeee\\.com/[^/?#]', 'i')],
+    type: LINK_TYPES.patronage,
+  },
+  'trove': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?trove\.nla\.gov\.au\/work\/([^\/?#]+)(?:.*)?$/, 'https://trove.nla.gov.au/work/$1');
+      url = url.replace(/^(?:https?:\/\/)?trove\.nla\.gov\.au\/people\/([^\/?#]+)(?:.*)?$/, 'https://nla.gov.au/nla.party-$1');
+      url = url.replace(/^(?:https?:\/\/)?nla\.gov\.au\/(nla\.party-|anbd\.bib-an)([^\/?#]+)(?:.*)?$/, 'https://nla.gov.au/$1$2');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?(trove\\.)?nla\\.gov\\.au/', 'i')],
+    type: LINK_TYPES.otherdatabases,
+  },
   'twitch': {
     clean: function (url) {
       url = url.replace(/^(?:https?:\/\/)?(?:www\.)?twitch\.tv\/((?:videos\/)?[^\/?#]+)(?:.*)?$/, 'https://www.twitch.tv/$1');
@@ -2124,6 +2214,15 @@ const CLEANUPS = {
     validate: function (url, id) {
       return /^https:\/\/(?:[a-z-]+\.)?wikisource\.org\/wiki\//.test(url);
     },
+  },
+  'worldcat': {
+    clean: function (url) {
+      url = url.replace(/^(?:https?:\/\/)?(?:www\.)?worldcat\.org/, 'https://www.worldcat.org');
+      url = url.replace(/^https:\/\/www\.worldcat\.org(?:\/title\/[a-zA-Z0-9_-]+)?\/oclc\/([^&?]+)(?:.*)$/, 'https://www.worldcat.org/oclc/$1');
+      return url;
+    },
+    match: [new RegExp('^(https?://)?(www\\.)?worldcat\\.org/', 'i')],
+    type: LINK_TYPES.otherdatabases,
   },
   'youtube': {
     clean: function (url) {
