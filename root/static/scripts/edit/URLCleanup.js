@@ -615,7 +615,7 @@ const CLEANUPS = {
           case LINK_TYPES.downloadpurchase.recording:
             return prefix === 'track' || prefix === 'stem';
           case LINK_TYPES.downloadpurchase.release:
-            return prefix === 'release' || prefix == 'chart' || prefix === 'stem-pack';
+            return prefix === 'release' || prefix === 'chart' || prefix === 'stem-pack';
           case LINK_TYPES.downloadpurchase.label:
             return prefix === 'label';
         }
@@ -743,7 +743,7 @@ const CLEANUPS = {
         const prefix = m[1];
         switch (id) {
           case LINK_TYPES.otherdatabases.work:
-            return prefix == 'works/work';
+            return prefix === 'works/work';
           case LINK_TYPES.otherdatabases.artist:
             return prefix !== 'works/work';
         }
