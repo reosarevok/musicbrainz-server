@@ -11,13 +11,12 @@ import React from 'react';
 import {range} from 'lodash';
 
 import {lp_attributes} from '../static/scripts/common/i18n/attributes';
-import {l_statistics, ln_statistics} from '../static/scripts/common/i18n/statistics';
+import {l_statistics as l, ln_statistics as ln} from '../static/scripts/common/i18n/statistics';
 import {withCatalystContext} from '../context';
 import manifest from '../static/manifest';
 
 import {formatCount, formatPercentage} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {StatsT} from './types';
 
 type CoverArtStatsT = {|
   +$c: CatalystContextT,
@@ -25,7 +24,7 @@ type CoverArtStatsT = {|
   +releaseFormatStats: $ReadOnlyArray<CoverArtReleaseFormatStatT>,
   +releaseStatusStats: $ReadOnlyArray<CoverArtReleaseStatusStatT>,
   +releaseTypeStats: $ReadOnlyArray<CoverArtReleaseTypeStatT>,
-  +stats: StatsT,
+  +stats: {[string]: number},
   +typeStats: $ReadOnlyArray<CoverArtTypeStatT>,
 |};
 
@@ -54,7 +53,7 @@ const nameOrNull = (name: string, defaultName: string) => {
     return defaultName;
   }
 
-  return l_statistics(name);
+  return l(name);
 };
 
 const oneToTwentyNine = range(1, 30);
@@ -68,161 +67,163 @@ const CoverArt = ({
   stats,
   typeStats,
 }: CoverArtStatsT) => (
-  <StatisticsLayout fullWidth page="coverart" title={l_statistics('Cover Art')}>
+  <StatisticsLayout fullWidth page="coverart" title={l('Cover Art')}>
     {manifest.css('statistics')}
-    <p>{l_statistics('Last updated: {date}',
-      {__react: true, date: dateCollected})}
+    <p>
+      {l('Last updated: {date}',
+        {date: dateCollected})}
     </p>
-    <h2>{l_statistics('Basics')}</h2>
+    <h2>{l('Basics')}</h2>
     {/* TODO: check why this seems to just not exist rather than be 0 */}
-    {stats.data['count.release.has_caa'] < 1 ? (
+    {stats['count.release.has_caa'] < 1 ? (
       <p>
-        {l_statistics('No cover art statistics available.')}
+        {l('No cover art statistics available.')}
       </p>
     ) : (
       <table className="database-statistics">
         <tbody>
           <tr>
-            <th>{l_statistics('Releases with cover art:')}</th>
-            <td>{formatCount(stats.data['count.release.has_caa'], $c)}</td>
-            <td>{formatPercentage(stats.data['count.release.has_caa'] / stats.data['count.release'], 1, $c)}</td>
+            <th>{l('Releases with cover art:')}</th>
+            <td>{formatCount($c, stats['count.release.has_caa'])}</td>
+            <td>{formatPercentage($c, stats['count.release.has_caa'] / stats['count.release'], 1)}</td>
           </tr>
           <tr>
-            <th>{l_statistics('Pieces of cover art:')}</th>
-            <td>{formatCount(stats.data['count.coverart'], $c)}</td>
+            <th>{l('Pieces of cover art:')}</th>
+            <td>{formatCount($c, stats['count.coverart'])}</td>
             <td />
           </tr>
         </tbody>
       </table>
     )}
-    <h2>{l_statistics('Releases')}</h2>
+    <h2>{l('Releases')}</h2>
     {releaseTypeStats.length === 0 && releaseStatusStats.length === 0 && releaseFormatStats.length === 0 ? (
       <p>
-        {l_statistics('No cover art statistics available.')}
+        {l('No cover art statistics available.')}
       </p>
     ) : (
       <table className="database-statistics">
         <tbody>
           <tr className="thead">
-            <th colSpan="4">{l_statistics('By Release Group Type')}</th>
+            <th colSpan="4">{l('By Release Group Type')}</th>
           </tr>
           <tr>
-            <th colSpan="2">{l_statistics('Releases with cover art:')}</th>
-            <td>{formatCount(stats.data['count.release.has_caa'], $c)}</td>
+            <th colSpan="2">{l('Releases with cover art:')}</th>
+            <td>{formatCount($c, stats['count.release.has_caa'])}</td>
             <td />
           </tr>
           {releaseTypeStats.map((type, index) => (
             <tr key={'type' + index}>
               <th />
-              <th>{nameOrNull(lp_attributes(type.type, 'release_group_primary_type'), l_statistics('No type'))}</th>
-              <td>{formatCount(stats.data[type.stat_name], $c)}</td>
-              <td>{formatPercentage(stats.data[type.stat_name] / stats.data['count.release.has_caa'], 1, $c)}</td>
+              <th>{nameOrNull(lp_attributes(type.type, 'release_group_primary_type'), l('No type'))}</th>
+              <td>{formatCount($c, stats[type.stat_name])}</td>
+              <td>{formatPercentage($c, stats[type.stat_name] / stats['count.release.has_caa'], 1)}</td>
             </tr>
           ))}
           <tr className="thead">
-            <th colSpan="4">{l_statistics('By Release Status')}</th>
+            <th colSpan="4">{l('By Release Status')}</th>
           </tr>
           <tr>
-            <th colSpan="2">{l_statistics('Releases with cover art:')}</th>
-            <td>{formatCount(stats.data['count.release.has_caa'], $c)}</td>
+            <th colSpan="2">{l('Releases with cover art:')}</th>
+            <td>{formatCount($c, stats['count.release.has_caa'])}</td>
             <td />
           </tr>
           {releaseStatusStats.map((status, index) => (
             <tr key={'status' + index}>
               <th />
-              <th>{nameOrNull(lp_attributes(status.status, 'release_status'), l_statistics('No status'))}</th>
-              <td>{formatCount(stats.data[status.stat_name], $c)}</td>
-              <td>{formatPercentage(stats.data[status.stat_name] / stats.data['count.release.has_caa'], 1, $c)}</td>
+              <th>{nameOrNull(lp_attributes(status.status, 'release_status'), l('No status'))}</th>
+              <td>{formatCount($c, stats[status.stat_name])}</td>
+              <td>{formatPercentage($c, stats[status.stat_name] / stats['count.release.has_caa'], 1)}</td>
             </tr>
           ))}
           <tr className="thead">
-            <th colSpan="4">{l_statistics('By Release Format')}</th>
+            <th colSpan="4">{l('By Release Format')}</th>
           </tr>
           <tr>
-            <th colSpan="2">{l_statistics('Releases with cover art:')}</th>
-            <td>{formatCount(stats.data['count.release.has_caa'], $c)}</td>
+            <th colSpan="2">{l('Releases with cover art:')}</th>
+            <td>{formatCount($c, stats['count.release.has_caa'])}</td>
             <td />
           </tr>
           {releaseFormatStats.map((format, index) => (
             <tr key={'format' + index}>
               <th />
-              <th>{nameOrNull(lp_attributes(format.format, 'medium_format'), l_statistics('No format'))}</th>
-              <td>{formatCount(stats.data[format.stat_name], $c)}</td>
-              <td>{formatPercentage(stats.data[format.stat_name] / stats.data['count.release.has_caa'], 1, $c)}</td>
+              <th>{nameOrNull(lp_attributes(format.format, 'medium_format'), l('No format'))}</th>
+              <td>{formatCount($c, stats[format.stat_name])}</td>
+              <td>{formatPercentage($c, stats[format.stat_name] / stats['count.release.has_caa'], 1)}</td>
             </tr>
           ))}
         </tbody>
       </table>)
     }
-    <h2>{l_statistics('Release groups')}</h2>
+    <h2>{l('Release groups')}</h2>
     <table className="database-statistics">
       <tbody>
         <tr>
-          <th colSpan="2">{l_statistics('Release groups with cover art:')}</th>
-          <td>{formatCount(stats.data['count.releasegroup.caa'], $c)}</td>
+          <th colSpan="2">{l('Release groups with cover art:')}</th>
+          <td>{formatCount($c, stats['count.releasegroup.caa'])}</td>
           <td />
         </tr>
         <tr>
           <th />
-          <th>{l_statistics('manually selected:')}</th>
-          <td>{formatCount(stats.data['count.releasegroup.caa.manually_selected'], $c)}</td>
-          <td>{formatPercentage(stats.data['count.releasegroup.caa.manually_selected'] / stats.data['count.releasegroup.caa'], 1, $c)}</td>
+          <th>{l('manually selected:')}</th>
+          <td>{formatCount($c, stats['count.releasegroup.caa.manually_selected'])}</td>
+          <td>{formatPercentage($c, stats['count.releasegroup.caa.manually_selected'] / stats['count.releasegroup.caa'], 1)}</td>
         </tr>
         <tr>
           <th />
-          <th>{l_statistics('automatically inferred:')}</th>
-          <td>{formatCount(stats.data['count.releasegroup.caa.inferred'], $c)}</td>
-          <td>{formatPercentage(stats.data['count.releasegroup.caa.inferred'] / stats.data['count.releasegroup.caa'], 1, $c)}</td>
+          <th>{l('automatically inferred:')}</th>
+          <td>{formatCount($c, stats['count.releasegroup.caa.inferred'])}</td>
+          <td>{formatPercentage($c, stats['count.releasegroup.caa.inferred'] / stats['count.releasegroup.caa'], 1)}</td>
         </tr>
       </tbody>
     </table>
 
-    <h2>{l_statistics('Pieces of cover art')}</h2>
-    {stats.data['count.release.has_caa'] < 1 ? (
+    <h2>{l('Pieces of cover art')}</h2>
+    {stats['count.release.has_caa'] < 1 ? (
       <p>
-        {l_statistics('No cover art statistics available.')}
+        {l('No cover art statistics available.')}
       </p>
     ) : (
       <table className="database-statistics">
         <tbody>
           <tr className="thead">
-            <th colSpan="4">{l_statistics('By Cover Art Type')}</th>
+            <th colSpan="4">{l('By Cover Art Type')}</th>
           </tr>
           <tr>
-            <th colSpan="2">{l_statistics('Pieces of cover art:')}</th>
-            <td>{formatCount(stats.data['count.coverart'], $c)}</td>
+            <th colSpan="2">{l('Pieces of cover art:')}</th>
+            <td>{formatCount($c, stats['count.coverart'])}</td>
             <td />
           </tr>
           {typeStats.map((type, index) => (
             <tr key={'type' + index}>
               <th />
-              <th>{nameOrNull(type.type, l_statistics('No type'))}</th>
-              <td>{formatCount(stats.data[type.stat_name], $c)}</td>
-              <td>{formatPercentage(stats.data[type.stat_name] / stats.data['count.coverart'], 1, $c)}</td>
+              <th>{nameOrNull(type.type, l('No type'))}</th>
+              <td>{formatCount($c, stats[type.stat_name])}</td>
+              <td>{formatPercentage($c, stats[type.stat_name] / stats['count.coverart'], 1)}</td>
             </tr>
           ))}
           <tr className="thead">
-            <th colSpan="4">{l_statistics('Per release')}</th>
+            <th colSpan="4">{l('Per release')}</th>
           </tr>
           <tr>
-            <th colSpan="2">{l_statistics('Releases with cover art:')}</th>
-            <td>{formatCount(stats.data['count.release.has_caa'], $c)}</td>
+            <th colSpan="2">{l('Releases with cover art:')}</th>
+            <td>{formatCount($c, stats['count.release.has_caa'])}</td>
             <td />
           </tr>
           {oneToTwentyNine.map((number) => (
             <tr key={number}>
               <th />
-              <th>{ln_statistics('with {num} piece of cover art:', 'with {num} pieces of cover art:', {__react: true, num: number})}
+              <th>
+                {ln('with {num} piece of cover art:', 'with {num} pieces of cover art:', {num: number})}
               </th>
-              <td>{formatCount(stats.data['count.coverart.per_release.' + number + 'images'], $c)}</td>
-              <td>{formatPercentage(stats.data['count.coverart.per_release.' + number + 'images'] / stats.data['count.release.has_caa'], 1, $c)}</td>
+              <td>{formatCount($c, stats['count.coverart.per_release.' + number + 'images'])}</td>
+              <td>{formatPercentage($c, stats['count.coverart.per_release.' + number + 'images'] / stats['count.release.has_caa'], 1)}</td>
             </tr>
           ))}
           <tr>
             <th />
-            <th>{l_statistics('with 30 or more pieces of cover art:')}</th>
-            <td>{formatCount(stats.data['count.coverart.per_release.30images'], $c)}</td>
-            <td>{formatPercentage(stats.data['count.coverart.per_release.30images'] / stats.data['count.release.has_caa'], 1, $c)}</td>
+            <th>{l('with 30 or more pieces of cover art:')}</th>
+            <td>{formatCount($c, stats['count.coverart.per_release.30images'])}</td>
+            <td>{formatPercentage($c, stats['count.coverart.per_release.30images'] / stats['count.release.has_caa'], 1)}</td>
           </tr>
         </tbody>
       </table>

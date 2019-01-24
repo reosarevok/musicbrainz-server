@@ -11,7 +11,7 @@
 import React from 'react';
 
 import manifest from '../static/manifest';
-import {l_statistics} from '../static/scripts/common/i18n/statistics';
+import {l_statistics as l} from '../static/scripts/common/i18n/statistics';
 import EntityLink from '../static/scripts/common/components/EntityLink';
 import {withCatalystContext} from '../context';
 import loopParity from '../utility/loopParity';
@@ -33,20 +33,36 @@ type CountryStatT = {|
 |};
 
 const Countries = ({$c, countryStats, dateCollected}: CountriesStatsT) => (
-  <StatisticsLayout fullWidth page="countries" title={l_statistics('Countries')}>
+  <StatisticsLayout fullWidth page="countries" title={l('Countries')}>
     {manifest.css('statistics')}
-    <p>{l_statistics('Last updated: {date}',
-      {__react: true, date: dateCollected})}
+    <p>
+      {l('Last updated: {date}',
+        {date: dateCollected})}
     </p>
     <table className="tbl">
       <thead>
         <tr>
-          <th className="pos">{l_statistics('Rank')}</th>
-          <th>{l_statistics('Country')}<div className="arrow" /></th>
-          <th>{l_statistics('Artists')}<div className="arrow" /></th>
-          <th>{l_statistics('Releases')}<div className="arrow" /></th>
-          <th>{l_statistics('Labels')}<div className="arrow" /></th>
-          <th>{l_statistics('Total')}<div className="arrow" /></th>
+          <th className="pos">{l('Rank')}</th>
+          <th>
+            {l('Country')}
+            <div className="arrow" />
+          </th>
+          <th>
+            {l('Artists')}
+            <div className="arrow" />
+          </th>
+          <th>
+            {l('Releases')}
+            <div className="arrow" />
+          </th>
+          <th>
+            {l('Labels')}
+            <div className="arrow" />
+          </th>
+          <th>
+            {l('Total')}
+            <div className="arrow" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -56,12 +72,12 @@ const Countries = ({$c, countryStats, dateCollected}: CountriesStatsT) => (
             <td>
               {country.entity.country_code
                 ? <EntityLink entity={country.entity} />
-                : l_statistics('Unknown Country')}
+                : l('Unknown Country')}
             </td>
-            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount(country.artist_count, $c)} entity={country.entity} subPath="artists" /> : formatCount(country.artist_count, $c)}</td>
-            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount(country.release_count, $c)} entity={country.entity} subPath="releases" /> : formatCount(country.release_count, $c)}</td>
-            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount(country.label_count, $c)} entity={country.entity} subPath="labels" /> : formatCount(country.label_count, $c)}</td>
-            <td className="t">{formatCount(country.artist_count + country.release_count + country.label_count, $c)}</td>
+            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount($c, country.artist_count)} entity={country.entity} subPath="artists" /> : formatCount($c, country.artist_count)}</td>
+            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount($c, country.release_count)} entity={country.entity} subPath="releases" /> : formatCount($c, country.release_count)}</td>
+            <td className="t">{country.entity.country_code ? <EntityLink content={formatCount($c, country.label_count)} entity={country.entity} subPath="labels" /> : formatCount($c, country.label_count)}</td>
+            <td className="t">{formatCount($c, country.artist_count + country.release_count + country.label_count)}</td>
           </tr>
         ))}
       </tbody>

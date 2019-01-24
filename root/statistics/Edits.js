@@ -9,14 +9,13 @@
 
 import React from 'react';
 
-import {l} from '../static/scripts/common/i18n';
-import {l_statistics} from '../static/scripts/common/i18n/statistics';
+import {l as l_mb_server} from '../static/scripts/common/i18n';
+import {l_statistics as l} from '../static/scripts/common/i18n/statistics';
 import {withCatalystContext} from '../context';
 import manifest from '../static/manifest';
 
 import {formatCount, formatPercentage} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {StatsT} from './types';
 
 type EditCategoryT = {|
   +edit_name: string,
@@ -26,27 +25,28 @@ type EditCategoryT = {|
 type EditsStatsT = {|
   +$c: CatalystContextT,
   +dateCollected: string,
-  +stats: StatsT,
+  +stats: {[string]: number},
   +statsByCategory: {[string]: $ReadOnlyArray<EditCategoryT>},
 |};
 
 const Edits = ({$c, dateCollected, stats, statsByCategory}: EditsStatsT) => (
-  <StatisticsLayout fullWidth page="edits" title={l_statistics('Edits')}>
+  <StatisticsLayout fullWidth page="edits" title={l('Edits')}>
     {manifest.css('statistics')}
-    <p>{l_statistics('Last updated: {date}',
-      {date: stats.date_collected})}
+    <p>
+      {l('Last updated: {date}',
+        {date: stats.date_collected})}
     </p>
-    <h2>{l_statistics('Edits')}</h2>
+    <h2>{l('Edits')}</h2>
     {Object.keys(statsByCategory).length === 0 ? (
       <p>
-        {l_statistics('No edit statistics available.')}
+        {l('No edit statistics available.')}
       </p>
     ) : (
       <table className="database-statistics">
         <tbody>
           <tr>
-            <th colSpan="2">{l_statistics('Edits:')}</th>
-            <td>{formatCount(stats.data['count.edit'], $c)}</td>
+            <th colSpan="2">{l('Edits:')}</th>
+            <td>{formatCount($c, stats['count.edit'])}</td>
             <td />
           </tr>
           {Object.keys(statsByCategory).sort().map((categoryKey) => {
@@ -59,9 +59,9 @@ const Edits = ({$c, dateCollected, stats, statsByCategory}: EditsStatsT) => (
                 {category.map((type) => (
                   <tr key={type.edit_type}>
                     <th />
-                    <th>{l(type.edit_name)}</th>
-                    <td>{formatCount(stats.data['count.edit.type.' + type.edit_type], $c)}</td>
-                    <td>{formatPercentage(stats.data['count.edit.type.' + type.edit_type] / stats.data['count.edit'], 2, $c)}</td>
+                    <th>{l_mb_server(type.edit_name)}</th>
+                    <td>{formatCount($c, stats['count.edit.type.' + type.edit_type])}</td>
+                    <td>{formatPercentage($c, stats['count.edit.type.' + type.edit_type] / stats['count.edit'], 2)}</td>
                   </tr>
                 ))}
               </>

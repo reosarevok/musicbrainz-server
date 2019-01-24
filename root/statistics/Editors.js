@@ -9,7 +9,7 @@
 
 import React from 'react';
 
-import {l_statistics} from '../static/scripts/common/i18n/statistics';
+import {l_statistics as l} from '../static/scripts/common/i18n/statistics';
 import EditorLink from '../static/scripts/common/components/EditorLink';
 import {withCatalystContext} from '../context';
 import loopParity from '../utility/loopParity';
@@ -43,9 +43,15 @@ const EditorStatsTable = withCatalystContext(({
     <table className="tbl">
       <thead>
         <tr>
-          <th className="pos">{l_statistics('Rank')}</th>
-          <th>{editorLabel}<div className="arrow" /></th>
-          <th>{countLabel}<div className="arrow" /></th>
+          <th className="pos">{l('Rank')}</th>
+          <th>
+            {editorLabel}
+            <div className="arrow" />
+          </th>
+          <th>
+            {countLabel}
+            <div className="arrow" />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -54,12 +60,12 @@ const EditorStatsTable = withCatalystContext(({
             <tr className={loopParity(index)} key={editorStat.editor.id}>
               <td className="t">{index + 1}</td>
               <td><EditorLink editor={editorStat.editor} /></td>
-              <td className="t">{formatCount(editorStat.count, $c)}</td>
+              <td className="t">{formatCount($c, editorStat.count)}</td>
             </tr>
           ))
         ) : (
           <tr className="even">
-            <td colSpan="3">{l_statistics('There is no data to display here.')}</td>
+            <td colSpan="3">{l('There is no data to display here.')}</td>
           </tr>
         )}
       </tbody>
@@ -74,24 +80,25 @@ const Editors = ({
   topRecentlyActiveVoters,
   topVoters,
 }: EditorsStatsT) => (
-  <StatisticsLayout fullWidth page="editors" title={l_statistics('Editors')}>
+  <StatisticsLayout fullWidth page="editors" title={l('Editors')}>
     {manifest.css('statistics')}
-    <p>{l_statistics('Last updated: {date}',
-      {date: dateCollected})}
+    <p>
+      {l('Last updated: {date}',
+        {date: dateCollected})}
     </p>
     <p>
-      {l_statistics('For the vote statistics, only yes or no votes are counted, abstain \
+      {l('For the vote statistics, only yes or no votes are counted, abstain \
     votes are not counted.')}
     </p>
     <div style={{display: 'inline-block', float: 'left', marginRight: '50px'}}>
-      <h2 style={{marginTop: 0}}>{l_statistics('Editors')}</h2>
-      <EditorStatsTable countLabel={l_statistics('Open and applied edits in past week')} dataPoints={topRecentlyActiveEditors} editorLabel={l_statistics('Editor')} tableLabel={l_statistics('Most active editors in the past week')} />
-      <EditorStatsTable countLabel={l_statistics('Total applied edits')} dataPoints={topEditors} editorLabel={l_statistics('Editor')} tableLabel={l_statistics('Top editors overall')} />
+      <h2 style={{marginTop: 0}}>{l('Editors')}</h2>
+      <EditorStatsTable countLabel={l('Open and applied edits in past week')} dataPoints={topRecentlyActiveEditors} editorLabel={l('Editor')} tableLabel={l('Most active editors in the past week')} />
+      <EditorStatsTable countLabel={l('Total applied edits')} dataPoints={topEditors} editorLabel={l('Editor')} tableLabel={l('Top editors overall')} />
     </div>
     <div style={{display: 'inline-block', float: 'left', marginRight: '50px'}}>
-      <h2 style={{marginTop: 0}}>{l_statistics('Voters')}</h2>
-      <EditorStatsTable countLabel={l_statistics('Votes in past week')} dataPoints={topRecentlyActiveVoters} editorLabel={l_statistics('Voter')} tableLabel={l_statistics('Most active voters in the past week')} />
-      <EditorStatsTable countLabel={l_statistics('Total votes')} dataPoints={topVoters} editorLabel={l_statistics('Voter')} tableLabel={l_statistics('Top voters overall')} />
+      <h2 style={{marginTop: 0}}>{l('Voters')}</h2>
+      <EditorStatsTable countLabel={l('Votes in past week')} dataPoints={topRecentlyActiveVoters} editorLabel={l('Voter')} tableLabel={l('Most active voters in the past week')} />
+      <EditorStatsTable countLabel={l('Total votes')} dataPoints={topVoters} editorLabel={l('Voter')} tableLabel={l('Top voters overall')} />
     </div>
   </StatisticsLayout>
 );

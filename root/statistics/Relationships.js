@@ -11,25 +11,24 @@ import React from 'react';
 
 import {compare} from '../static/scripts/common/i18n';
 import {l_relationships} from '../static/scripts/common/i18n/relationships';
-import {l_statistics} from '../static/scripts/common/i18n/statistics';
+import {l_statistics as l} from '../static/scripts/common/i18n/statistics';
 import {withCatalystContext} from '../context';
 import manifest from '../static/manifest';
 import formatEntityTypeName from '../static/scripts/common/utility/formatEntityTypeName';
 
 import {formatCount, formatPercentage} from './utilities';
 import StatisticsLayout from './StatisticsLayout';
-import type {StatsT} from './types';
 
 export type RelationshipsStatsT = {|
   +$c: CatalystContextT,
   +dateCollected: string,
-  +stats: StatsT,
+  +stats: {[string]: number},
   +types: {[string]: RelationshipTypeT},
 |};
 
 declare type RelationshipTypeT = {|
   +entity_types: $ReadOnlyArray<string>,
-  +tree: {[string]: Array<LinkTypeT>},
+  +tree: {[string]: $ReadOnlyArray<LinkTypeT>},
 |};
 
 function comparePhrases(a, b) {
@@ -48,9 +47,9 @@ const TypeRows = withCatalystContext(({
     <>
       <tr>
         <th style={{paddingLeft: (indent - 1) + 'em'}}>{l_relationships(type.long_link_phrase)}</th>
-        <td>{formatCount(stats.data[base + '.' + type.name], $c)}</td>
-        <td>{formatCount(stats.data[base + '.' + type.name + '.inclusive'], $c)}</td>
-        <td>{formatPercentage(stats.data[base + '.' + type.name + '.inclusive'] / stats.data[parent], 1, $c)}</td>
+        <td>{formatCount($c, stats[base + '.' + type.name])}</td>
+        <td>{formatCount($c, stats[base + '.' + type.name + '.inclusive'])}</td>
+        <td>{formatPercentage($c, stats[base + '.' + type.name + '.inclusive'] / stats[parent], 1)}</td>
       </tr>
       {type.children ? (
         type.children.sort(comparePhrases).map((child) => (
@@ -67,29 +66,30 @@ const Relationships = ({
   stats,
   types,
 }: RelationshipsStatsT) => (
-  <StatisticsLayout fullWidth page="relationships" title={l_statistics('Relationships')}>
+  <StatisticsLayout fullWidth page="relationships" title={l('Relationships')}>
     {manifest.css('statistics')}
-    <p>{l_statistics('Last updated: {date}',
-      {date: stats.date_collected})}
+    <p>
+      {l('Last updated: {date}',
+        {date: stats.date_collected})}
     </p>
-    <h2>{l_statistics('Relationships')}</h2>
-    {stats.data['count.ar.links'] < 1 ? (
+    <h2>{l('Relationships')}</h2>
+    {stats['count.ar.links'] < 1 ? (
       <p>
-        {l_statistics('No relationship statistics available.')}
+        {l('No relationship statistics available.')}
       </p>
     ) : (
       <table className="database-statistics">
         <tbody>
           <tr className="thead">
             <th />
-            <th>{l_statistics('Exclusive')}</th>
-            <th>{l_statistics('Inclusive')}</th>
+            <th>{l('Exclusive')}</th>
+            <th>{l('Inclusive')}</th>
             <th />
           </tr>
           <tr>
-            <th>{l_statistics('Relationships:')}</th>
+            <th>{l('Relationships:')}</th>
             <td />
-            <td>{formatCount(stats.data['count.ar.links'], $c)}</td>
+            <td>{formatCount($c, stats['count.ar.links'])}</td>
             <td />
           </tr>
           {Object.keys(types).sort().map((typeKey) => {
@@ -99,12 +99,12 @@ const Relationships = ({
             return (
               <>
                 <tr className="thead">
-                  <th colSpan="4">{l_statistics('{type0}-{type1}', {type0: type0, type1: type1})}</th>
+                  <th colSpan="4">{l('{type0}-{type1}', {type0: type0, type1: type1})}</th>
                 </tr>
                 <tr>
-                  <th colSpan="2">{l_statistics('{type0}-{type1} relationships:', {type0: type0, type1: type1})}</th>
-                  <td>{formatCount(stats.data['count.ar.links.' + typeKey], $c)}</td>
-                  <td>{formatPercentage(stats.data['count.ar.links.' + typeKey] / stats.data['count.ar.links'], 1, $c)}</td>
+                  <th colSpan="2">{l('{type0}-{type1} relationships:', {type0: type0, type1: type1})}</th>
+                  <td>{formatCount($c, stats['count.ar.links.' + typeKey])}</td>
+                  <td>{formatPercentage($c, stats['count.ar.links.' + typeKey] / stats['count.ar.links'], 1)}</td>
                 </tr>
                 {Object.keys(type.tree).sort().map((child) => (
                   type.tree[child].sort(comparePhrases).map((child2) => (
