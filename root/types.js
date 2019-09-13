@@ -658,6 +658,14 @@ declare type MediumT = {|
   +tracks?: $ReadOnlyArray<TrackT>,
 |};
 
+declare type MergeForm = FormT<{|
+  +edit_note: ReadOnlyFieldT<string>,
+  +make_votable: ReadOnlyFieldT<boolean>,
+  +merging: RepeatableFieldT<FieldT<number>>,
+  +rename: ReadOnlyFieldT<boolean>,
+  +target: ReadOnlyFieldT<number>,
+|}>;
+
 declare type MinimalCoreEntityT = {
   +entityType: string,
   +gid: string,
