@@ -24,6 +24,12 @@ declare type CollectionT = {
   +subscribed?: boolean,
 };
 
+declare type CollectionCommentsRoleT = {
+  +collectionComments?: {
+    +[entityGid: string]: string,
+  },
+};
+
 declare type CollectionTypeT = {
   ...OptionTreeT<'collection_type'>,
   item_entity_type: string,

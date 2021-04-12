@@ -14,6 +14,7 @@ import Table from '../Table';
 import {
   defineArtistRolesColumn,
   defineCheckboxColumn,
+  defineCollectionCommentsColumn,
   defineNameColumn,
   defineRatingsColumn,
   defineSeriesNumberColumn,
@@ -26,10 +27,12 @@ import {
 } from '../../utility/tableColumns';
 
 type Props = {
+  ...CollectionCommentsRoleT,
   ...SeriesItemNumbersRoleT,
   +checkboxes?: string,
   +mergeForm?: MergeFormT,
   +order?: string,
+  +showCollectionComments?: boolean,
   +showRatings?: boolean,
   +sortable?: boolean,
   +works: $ReadOnlyArray<WorkT>,
@@ -37,9 +40,11 @@ type Props = {
 
 const WorkList = ({
   checkboxes,
+  collectionComments,
   mergeForm,
   order,
   seriesItemNumbers,
+  showCollectionComments = false,
   showRatings = false,
   sortable,
   works,
@@ -72,6 +77,11 @@ const WorkList = ({
       const ratingsColumn = defineRatingsColumn<WorkT>({
         getEntity: entity => entity,
       });
+      const collectionCommentsColumn = showCollectionComments
+        ? defineCollectionCommentsColumn({
+          collectionComments: collectionComments,
+        })
+        : null;
 
       return [
         ...(checkboxColumn ? [checkboxColumn] : []),
@@ -84,15 +94,18 @@ const WorkList = ({
         workLanguagesColumn,
         attributesColumn,
         ...(showRatings ? [ratingsColumn] : []),
+        ...(collectionCommentsColumn ? [collectionCommentsColumn] : []),
         ...(mergeForm && works.length > 2 ? [removeFromMergeColumn] : []),
       ];
     },
     [
       $c.user,
       checkboxes,
+      collectionComments,
       mergeForm,
       order,
       seriesItemNumbers,
+      showCollectionComments,
       showRatings,
       sortable,
       works,

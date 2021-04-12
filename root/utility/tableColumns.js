@@ -208,6 +208,24 @@ export function defineCheckboxColumn(
   };
 }
 
+export function defineCollectionCommentsColumn(
+  props: {
+    +collectionComments?:
+      {+[entityGid: string]: string},
+  },
+): ColumnOptions<ArtistT | RecordingT | ReleaseT, number> {
+  return {
+    Cell: ({row: {original}}) => (
+      props.collectionComments &&
+      props.collectionComments[original.gid]
+        ? props.collectionComments[original.gid]
+        : null
+    ),
+    Header: l('Comments'),
+    id: 'collection-comments',
+  };
+}
+
 export function defineCountColumn<D>(
   props: {
     ...OrderableProps,

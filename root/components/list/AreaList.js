@@ -13,24 +13,29 @@ import {CatalystContext} from '../../context';
 import Table from '../Table';
 import {
   defineCheckboxColumn,
+  defineCollectionCommentsColumn,
   defineNameColumn,
   defineTypeColumn,
   removeFromMergeColumn,
 } from '../../utility/tableColumns';
 
 type Props = {
+  ...CollectionCommentsRoleT,
   +areas: $ReadOnlyArray<AreaT>,
   +checkboxes?: string,
   +mergeForm?: MergeFormT,
   +order?: string,
+  +showCollectionComments?: boolean,
   +sortable?: boolean,
 };
 
 const AreaList = ({
   areas,
   checkboxes,
+  collectionComments,
   mergeForm,
   order,
+  showCollectionComments = false,
   sortable,
 }: Props): React.Element<typeof Table> => {
   const $c = React.useContext(CatalystContext);
@@ -50,15 +55,30 @@ const AreaList = ({
         sortable: sortable,
         typeContext: 'area_type',
       });
+      const collectionCommentsColumn = showCollectionComments
+        ? defineCollectionCommentsColumn({
+          collectionComments: collectionComments,
+        })
+        : null;
 
       return [
         ...(checkboxColumn ? [checkboxColumn] : []),
         nameColumn,
         typeColumn,
+        ...(collectionCommentsColumn ? [collectionCommentsColumn] : []),
         ...(mergeForm && areas.length > 2 ? [removeFromMergeColumn] : []),
       ];
     },
-    [$c.user, areas, checkboxes, mergeForm, order, sortable],
+    [
+      $c.user,
+      areas,
+      checkboxes,
+      collectionComments,
+      mergeForm,
+      order,
+      showCollectionComments,
+      sortable,
+    ],
   );
 
   return <Table columns={columns} data={areas} />;

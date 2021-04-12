@@ -31,6 +31,7 @@ import UserInlineList from '../user/components/UserInlineList';
 import CollectionLayout from './CollectionLayout';
 
 type PropsForEntity<T: CoreEntityT> = {
+  ...CollectionCommentsRoleT,
   +$c: CatalystContextT,
   +collection: CollectionT,
   +collectionEntityType: $ElementType<T, 'entityType'>,
@@ -58,7 +59,9 @@ const listPicker = (
 ) => {
   const sharedProps = {
     checkboxes: canRemoveFromCollection ? 'remove' : '',
+    collectionComments: props.collectionComments,
     order: props.order,
+    showCollectionComments: true,
     sortable: true,
   };
 

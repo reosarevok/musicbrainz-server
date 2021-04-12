@@ -17,6 +17,7 @@ import formatBarcode from '../../static/scripts/common/utility/formatBarcode';
 import {
   defineArtistCreditColumn,
   defineCheckboxColumn,
+  defineCollectionCommentsColumn,
   defineInstrumentUsageColumn,
   defineNameColumn,
   defineRatingsColumn,
@@ -30,12 +31,14 @@ import {
 } from '../../utility/tableColumns';
 
 type Props = {
+  ...CollectionCommentsRoleT,
   ...InstrumentCreditsAndRelTypesRoleT,
   ...SeriesItemNumbersRoleT,
   +checkboxes?: string,
   +filterLabel?: LabelT,
   +order?: string,
   +releases: $ReadOnlyArray<ReleaseT>,
+  +showCollectionComments?: boolean,
   +showInstrumentCreditsAndRelTypes?: boolean,
   +showLanguages?: boolean,
   +showRatings?: boolean,
@@ -46,11 +49,13 @@ type Props = {
 
 const ReleaseList = ({
   checkboxes,
+  collectionComments,
   filterLabel,
   instrumentCreditsAndRelTypes,
   order,
   releases,
   seriesItemNumbers,
+  showCollectionComments = false,
   showInstrumentCreditsAndRelTypes = false,
   showLanguages = false,
   showRatings = false,
@@ -156,6 +161,11 @@ const ReleaseList = ({
       const ratingsColumn = defineRatingsColumn<ReleaseT>({
         getEntity: entity => entity.releaseGroup ?? null,
       });
+      const collectionCommentsColumn = showCollectionComments
+        ? defineCollectionCommentsColumn({
+          collectionComments: collectionComments,
+        })
+        : null;
 
       return [
         ...(checkboxColumn ? [checkboxColumn] : []),
@@ -174,16 +184,19 @@ const ReleaseList = ({
         ...(statusColumn ? [statusColumn] : []),
         ...($c.session?.tport == null ? [] : [taggerColumn]),
         ...(showRatings ? [ratingsColumn] : []),
+        ...(collectionCommentsColumn ? [collectionCommentsColumn] : []),
       ];
     },
     [
       $c.session?.tport,
       $c.user,
       checkboxes,
+      collectionComments,
       filterLabel,
       instrumentCreditsAndRelTypes,
       order,
       seriesItemNumbers,
+      showCollectionComments,
       showInstrumentCreditsAndRelTypes,
       showLanguages,
       showRatings,

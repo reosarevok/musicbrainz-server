@@ -17,6 +17,7 @@ import parseDate from '../../static/scripts/common/utility/parseDate';
 import {
   defineArtistCreditColumn,
   defineCheckboxColumn,
+  defineCollectionCommentsColumn,
   defineCountColumn,
   defineNameColumn,
   defineRatingsColumn,
@@ -26,32 +27,38 @@ import {
 } from '../../utility/tableColumns';
 
 type ReleaseGroupListTableProps = {
+  ...CollectionCommentsRoleT,
   ...SeriesItemNumbersRoleT,
   +checkboxes?: string,
   +mergeForm?: MergeFormT,
   +order?: string,
   +releaseGroups: $ReadOnlyArray<ReleaseGroupT>,
+  +showCollectionComments?: boolean,
   +showRatings?: boolean,
   +showType?: boolean,
   +sortable?: boolean,
 };
 
 type ReleaseGroupListProps = {
+  ...CollectionCommentsRoleT,
   ...SeriesItemNumbersRoleT,
   +checkboxes?: string,
   +mergeForm?: MergeFormT,
   +order?: string,
   +releaseGroups: $ReadOnlyArray<ReleaseGroupT>,
+  +showCollectionComments?: boolean,
   +showRatings?: boolean,
   +sortable?: boolean,
 };
 
 export const ReleaseGroupListTable = ({
   checkboxes,
+  collectionComments,
   mergeForm,
   order,
   releaseGroups,
   seriesItemNumbers,
+  showCollectionComments = false,
   showRatings = false,
   showType = true,
   sortable,
@@ -109,6 +116,11 @@ export const ReleaseGroupListTable = ({
       const ratingsColumn = defineRatingsColumn<ReleaseGroupT>({
         getEntity: entity => entity,
       });
+      const collectionCommentsColumn = showCollectionComments
+        ? defineCollectionCommentsColumn({
+          collectionComments: collectionComments,
+        })
+        : null;
 
       return [
         ...(checkboxColumn ? [checkboxColumn] : []),
@@ -119,6 +131,7 @@ export const ReleaseGroupListTable = ({
         ...(showType ? [typeColumn] : []),
         ...(showRatings ? [ratingsColumn] : []),
         releaseNumberColumn,
+        ...(collectionCommentsColumn ? [collectionCommentsColumn] : []),
         ...(mergeForm && releaseGroups.length > 2
           ? [removeFromMergeColumn]
           : []),
@@ -127,10 +140,12 @@ export const ReleaseGroupListTable = ({
     [
       $c.user,
       checkboxes,
+      collectionComments,
       mergeForm,
       order,
       releaseGroups,
       seriesItemNumbers,
+      showCollectionComments,
       showRatings,
       showType,
       sortable,
