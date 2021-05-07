@@ -154,11 +154,21 @@ const TagEntitiesList = ({
               {lp('delete my downvotes', 'folksonomy tags')}
             </a>
           ) : (
-            <a
-              href={'/tag/' + encodeURIComponent(tag.name) + '/delete'}
-            >
-              {lp('delete my upvotes', 'folksonomy tags')}
-            </a>
+            <>
+              <a
+                href={
+                  '/tag/' + encodeURIComponent(tag.name) +
+                  '/move'}
+              >
+                {lp('change tag', 'folksonomy')}
+              </a>
+              {' / '}
+              <a
+                href={'/tag/' + encodeURIComponent(tag.name) + '/delete'}
+              >
+                {lp('delete my upvotes', 'folksonomy tags')}
+              </a>
+            </>
           )}
         </p>
       ) : null}
