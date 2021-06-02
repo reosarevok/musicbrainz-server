@@ -10,8 +10,8 @@
 import he from 'he';
 import * as React from 'react';
 
-import {ArtworkImage} from '../components/Artwork';
 import Layout from '../layout';
+import {ArtworkImage} from '../static/scripts/common/components/Artwork';
 import {CONTACT_URL} from '../static/scripts/common/constants';
 import {reduceArtistCredit}
   from '../static/scripts/common/immutable-entities';

@@ -40,6 +40,7 @@ const entries = [
   'area/places-map',
   'artist',
   'artist/index',
+  'artwork',
   'collection/edit',
   'common',
   'confirm-seed',

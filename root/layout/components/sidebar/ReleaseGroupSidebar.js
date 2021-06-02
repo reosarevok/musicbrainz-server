@@ -11,10 +11,10 @@ import * as React from 'react';
 
 import ArtistCreditLink
   from '../../../static/scripts/common/components/ArtistCreditLink';
+import {Artwork} from '../../../static/scripts/common/components/Artwork';
 import entityHref from '../../../static/scripts/common/utility/entityHref';
 import ExternalLinks from '../ExternalLinks';
 import releaseGroupType from '../../../utility/releaseGroupType';
-import {Artwork} from '../../../components/Artwork';
 
 import AnnotationLinks from './AnnotationLinks';
 import CollectionLinks from './CollectionLinks';

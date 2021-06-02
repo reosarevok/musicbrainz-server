@@ -14,6 +14,7 @@ import * as ReactDOMServer from 'react-dom/server';
 
 import {QUALITY_UNKNOWN} from '../../../constants';
 import {CatalystContext} from '../../../context';
+import * as manifest from '../../../static/manifest';
 import EntityLink from '../../../static/scripts/common/components/EntityLink';
 import ReleaseEvents
   from '../../../static/scripts/common/components/ReleaseEvents';
@@ -25,7 +26,7 @@ import formatTrackLength
   from '../../../static/scripts/common/utility/formatTrackLength';
 import releaseLabelKey
   from '../../../static/scripts/common/utility/releaseLabelKey';
-import {Artwork} from '../../../components/Artwork';
+import {Artwork} from '../../../static/scripts/common/components/Artwork';
 import CritiqueBrainzLinks from '../../../components/CritiqueBrainzLinks';
 import LinkSearchableLanguage
   from '../../../components/LinkSearchableLanguage';
@@ -300,6 +301,7 @@ const ReleaseSidebar = ({release}: Props): React.Element<'div'> | null => {
       <SidebarLicenses entity={release} />
 
       <LastUpdated entity={release} />
+      {manifest.js('artwork', {async: 'async'})}
     </div>
   );
 };

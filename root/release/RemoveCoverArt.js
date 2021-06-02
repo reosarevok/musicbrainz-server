@@ -9,11 +9,11 @@
 
 import * as React from 'react';
 
-import {Artwork} from '../components/Artwork';
 import EnterEdit from '../components/EnterEdit';
 import EnterEditNote from '../components/EnterEditNote';
 import ArtistCreditLink
   from '../static/scripts/common/components/ArtistCreditLink';
+import {Artwork} from '../static/scripts/common/components/Artwork';
 import EntityLink from '../static/scripts/common/components/EntityLink';
 
 import ReleaseLayout from './ReleaseLayout';

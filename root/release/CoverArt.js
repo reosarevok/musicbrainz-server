@@ -9,10 +9,9 @@
 
 import * as React from 'react';
 
-import {Artwork} from '../components/Artwork';
+import ArtworkInfobox from '../components/ArtworkInfobox';
 import RequestLogin from '../components/RequestLogin';
 import EntityLink from '../static/scripts/common/components/EntityLink';
-import {commaOnlyListText} from '../static/scripts/common/i18n/commaOnlyList';
 import entityHref from '../static/scripts/common/utility/entityHref';
 
 import ReleaseLayout from './ReleaseLayout';
@@ -22,32 +21,6 @@ type Props = {
   +coverArt: $ReadOnlyArray<ArtworkT>,
   +release: ReleaseT,
 };
-
-const CoverArtLinks = ({
-  artwork,
-}: {artwork: ArtworkT}): React.Element<typeof React.Fragment> => (
-  <>
-    {artwork.small_thumbnail ? (
-      <>
-        <a href={artwork.small_thumbnail}>{l('250px')}</a>
-        {' | '}
-      </>
-    ) : null}
-    {artwork.large_thumbnail ? (
-      <>
-        <a href={artwork.large_thumbnail}>{l('500px')}</a>
-        {' | '}
-      </>
-    ) : null}
-    {artwork.huge_thumbnail ? (
-      <>
-        <a href={artwork.huge_thumbnail}>{l('1200px')}</a>
-        {' | '}
-      </>
-    ) : null}
-    <a href={artwork.image}>{l('original')}</a>
-  </>
-);
 
 const CoverArt = ({
   $c,
@@ -71,53 +44,13 @@ const CoverArt = ({
         </p>
       ) : coverArt.length ? (
         <>
-          {coverArt.map(artwork => (
-            <div
-              className={
-                'artwork-cont' +
-                (artwork.editsPending ? ' mp' : '')
-              }
-              key={artwork.id}
-            >
-              <div className="artwork" style={{position: 'relative'}}>
-                <Artwork artwork={artwork} />
-              </div>
-              <p>
-                {l('Types:')}
-                {' '}
-                {artwork.types?.length ? (
-                  commaOnlyListText(artwork.types.map(
-                    type => lp_attributes(type, 'cover_art_type'),
-                  ))
-                ) : lp('-', 'missing data')}
-              </p>
-              {artwork.comment ? (
-                <p>
-                  {artwork.comment}
-                </p>
-              ) : null}
-              <p className="small">
-                {l('All sizes:')}
-                {' '}
-                <CoverArtLinks artwork={artwork} />
-              </p>
-              {$c.user ? (
-                <div className="buttons">
-                  <a
-                    href={'/release/' + release.gid +
-                          '/edit-cover-art/' + artwork.id}
-                  >
-                    {l('Edit')}
-                  </a>
-                  <a
-                    href={'/release/' + release.gid +
-                          '/remove-cover-art/' + artwork.id}
-                  >
-                    {l('Remove')}
-                  </a>
-                </div>
-              ) : null}
-            </div>
+          {coverArt.map((artwork, index) => (
+            <ArtworkInfobox
+              artwork={artwork}
+              key={index}
+              release={release}
+              showButtons
+            />
           ))}
 
           <p>

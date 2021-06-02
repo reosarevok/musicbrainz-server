@@ -303,6 +303,8 @@ module.exports = {
   'artist/ArtistHeader': require('../artist/ArtistHeader'),
   'collection/CollectionHeader': require('../collection/CollectionHeader'),
   'components/Aliases': require('../components/Aliases'),
+  'components/ArtworkInfobox': require('../components/ArtworkInfobox'),
+  'components/ArtworkMiniBox': require('../components/ArtworkMiniBox'),
   'components/GroupedTrackRelationships': require('../components/GroupedTrackRelationships'),
   'components/MediumToolbox': require('../components/MediumToolbox'),
   'components/Relationships': require('../components/Relationships'),

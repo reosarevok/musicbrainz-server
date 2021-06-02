@@ -9,8 +9,10 @@
 
 import * as React from 'react';
 
-import {commaOnlyListText} from '../static/scripts/common/i18n/commaOnlyList';
-import {bracketedText} from '../static/scripts/common/utility/bracketed';
+import {commaOnlyListText} from '../i18n/commaOnlyList';
+import {bracketedText} from '../utility/bracketed';
+import Tooltip from '../../edit/components/Tooltip';
+import hydrate from '../../../../utility/hydrate';
 
 const lType = (x) => lp_attributes(x, 'cover_art_type');
 
@@ -35,7 +37,6 @@ type Props = {
 export const ArtworkImage = ({
   artwork,
   fallback,
-  hover,
   message,
 }: Props): React.Element<typeof React.Fragment> => (
   <>
@@ -51,40 +52,54 @@ export const ArtworkImage = ({
         ? message
         : l('Image not available yet, please try again in a few minutes.')}
       data-small-thumbnail={artwork.small_ia_thumbnail}
-      data-title={nonEmpty(hover) ? hover : artworkHover(artwork)}
     />
   </>
 );
 
-export const Artwork = ({
+export const Artwork: React.AbstractComponent<Props, void> =
+hydrate<Props>('span.artwork', ({
   artwork,
   fallback,
   hover,
   message,
-}: Props): React.Element<'a'> => (
-  <a
-    className={artwork.mime_type === 'application/pdf'
-      ? 'artwork-pdf'
-      : 'artwork-image'}
-    href={artwork.image}
-    title={nonEmpty(hover) ? hover : artworkHover(artwork)}
-  >
-    {artwork.mime_type === 'application/pdf' ? (
-      <div
-        className="file-format-tag"
-        title={l(
-          `This is a PDF file, the thumbnail may not show
-           the entire contents of the file.`,
-        )}
+}: Props) => {
+  const [showHover, setShowHover] = React.useState(false);
+  const tooltipContent = nonEmpty(hover) ? hover : artworkHover(artwork);
+
+  return (
+    <>
+      <a
+        className={artwork.mime_type === 'application/pdf'
+          ? 'artwork-pdf'
+          : 'artwork-image'}
+        href={artwork.image}
+        onMouseEnter={() => setShowHover(true)}
+        onMouseLeave={() => setShowHover(false)}
       >
-        {l('PDF file')}
-      </div>
-    ) : null}
-    <ArtworkImage
-      artwork={artwork}
-      fallback={fallback}
-      hover={hover}
-      message={message}
-    />
-  </a>
-);
+        {artwork.mime_type === 'application/pdf' ? (
+          <div
+            className="file-format-tag"
+            title={l(
+              `This is a PDF file, the thumbnail may not show
+              the entire contents of the file.`,
+            )}
+          >
+            {l('PDF file')}
+          </div>
+        ) : null}
+        <ArtworkImage
+          artwork={artwork}
+          fallback={fallback}
+          hover={hover}
+          message={message}
+        />
+      </a>
+      {showHover ? (
+        <Tooltip
+          content={tooltipContent}
+          hoverCallback={setShowHover}
+        />
+      ) : null}
+    </>
+  );
+});

@@ -9,7 +9,7 @@
 
 import * as React from 'react';
 
-import {Artwork} from '../../components/Artwork';
+import {Artwork} from '../../static/scripts/common/components/Artwork';
 import expand2html from '../../static/scripts/common/i18n/expand2html';
 import entityHref from '../../static/scripts/common/utility/entityHref';
 
