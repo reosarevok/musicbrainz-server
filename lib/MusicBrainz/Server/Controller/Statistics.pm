@@ -418,6 +418,19 @@ sub no_statistics : Private {
     );
 }
 
+sub musicbrainz_history : Path('/history') Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(
+        current_view => 'Node',
+        component_path => 'statistics/MusicBrainzHistory',
+        component_props => {
+            events => to_json_array($c->model('Statistics')->all_events),
+        },
+    );
+}
+
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2011 MetaBrainz Foundation Inc.

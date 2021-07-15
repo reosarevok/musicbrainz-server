@@ -282,6 +282,7 @@ module.exports = {
   'statistics/Editors': require('../statistics/Editors'),
   'statistics/Edits': require('../statistics/Edits'),
   'statistics/Formats': require('../statistics/Formats'),
+  'statistics/MusicBrainzHistory': require('../statistics/MusicBrainzHistory'),
   'statistics/Index': require('../statistics/Index'),
   'statistics/LanguagesScripts': require('../statistics/LanguagesScripts'),
   'statistics/NoStatistics': require('../statistics/NoStatistics'),
