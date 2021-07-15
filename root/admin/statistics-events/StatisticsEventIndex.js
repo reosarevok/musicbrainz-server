@@ -13,8 +13,6 @@ import Layout from '../../layout';
 import expand2react from '../../static/scripts/common/i18n/expand2react';
 import loopParity from '../../utility/loopParity';
 
-import type {StatisticsEventT} from './types';
-
 type PropsT = {
   +events: Array<StatisticsEventT>,
 };

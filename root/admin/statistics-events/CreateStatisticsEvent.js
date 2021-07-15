@@ -12,7 +12,6 @@ import * as React from 'react';
 import Layout from '../../layout';
 
 import StatisticsEventEditForm from './StatisticsEventEditForm';
-import type {StatisticsEventFormT} from './types';
 
 type PropsT = {
   +form: StatisticsEventFormT,

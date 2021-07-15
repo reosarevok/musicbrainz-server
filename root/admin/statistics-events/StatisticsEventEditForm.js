@@ -14,8 +14,6 @@ import FormRowTextLong from '../../components/FormRowTextLong';
 import FormSubmit from '../../components/FormSubmit';
 import {CatalystContext} from '../../context';
 
-import type {StatisticsEventFormT} from './types';
-
 type PropsT = {
   +form: StatisticsEventFormT,
 };

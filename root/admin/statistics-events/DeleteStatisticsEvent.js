@@ -13,8 +13,6 @@ import Layout from '../../layout';
 import FormSubmit from '../../components/FormSubmit';
 import expand2react from '../../static/scripts/common/i18n/expand2react';
 
-import type {StatisticsEventT} from './types';
-
 type PropsT = {
   +$c: CatalystContextT,
   +event: StatisticsEventT,
