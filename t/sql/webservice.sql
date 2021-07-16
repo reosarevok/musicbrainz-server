@@ -1612,6 +1612,7 @@ INSERT INTO l_artist_recording (edits_pending, entity0, entity1, id, last_update
 INSERT INTO l_artist_recording (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 11545, 1542690, 515106, '2011-01-18 15:56:00.408782+00', 12281);
 INSERT INTO l_artist_recording (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 11545, 1542691, 515107, '2011-01-18 15:56:00.408782+00', 12281);
 INSERT INTO l_artist_recording (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 283833, 2726274, 515108, '2011-01-18 15:56:00.408782+00', 12282);
+INSERT INTO l_artist_recording (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 398598, 449989, 515109, '2011-01-18 15:56:00.408782+00', 12282);
 
 INSERT INTO l_artist_release (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 398598, 459740, 79005, '2011-01-18 15:52:02.917556+00', 1956);
 INSERT INTO l_artist_release (edits_pending, entity0, entity1, id, last_updated, link) VALUES (0, 11545, 24752, 219815, '2011-01-18 15:52:02.917556+00', 34);

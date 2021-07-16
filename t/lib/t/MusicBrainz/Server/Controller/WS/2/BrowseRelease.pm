@@ -382,6 +382,79 @@ ws_test 'browse releases via recording',
     </release-list>
 </metadata>';
 
+ws_test 'browse releases via recording, with recording rels',
+    '/release?inc=recordings+artist-rels+recording-level-rels&status=official&recording=c43ee188-0049-4eec-ba2e-0385c5edd2db' =>
+    '<?xml version="1.0" ?>
+<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">
+    <release-list count="1">
+        <release id="ec0d0122-b559-4aa1-a017-7068814aae57">
+            <title>Soup</title>
+            <status id="4e304316-386d-3409-af2e-78857eec5cfe">Official</status>
+            <quality>normal</quality>
+            <text-representation>
+            <language>eng</language>
+            <script>Latn</script>
+            </text-representation>
+            <barcode>0208311348266</barcode>
+            <cover-art-archive>
+            <artwork>false</artwork>
+            <count>0</count>
+            <front>false</front>
+            <back>false</back>
+            </cover-art-archive>
+            <medium-list count="1">
+            <medium>
+                <position>1</position>
+                <format id="9712d52a-4509-3d4b-a1a2-67c88c643e31">CD</format>
+                <pregap id="1a0ba71b-fb23-3931-a426-cd204a82a90e">
+                <position>0</position>
+                <number>0</number>
+                <length>128000</length>
+                <recording id="c0beb80b-4185-4328-8761-b9e45a5d0ac6">
+                    <title>Hello Goodbye [hidden track]</title>
+                    <length>128000</length>
+                </recording>
+                </pregap>
+                <track-list count="2" offset="0">
+                <track id="7b84af2d-96b3-3c50-a667-e7d10e8b000d">
+                    <position>1</position>
+                    <number>1</number>
+                    <title>Galaxie</title>
+                    <length>211133</length>
+                    <recording id="c43ee188-0049-4eec-ba2e-0385c5edd2db">
+                        <title>Hello Goodbye / Galaxie</title>
+                        <length>211133</length>
+                        <relation-list target-type="artist">
+                            <relation type-id="59054b12-01ac-43ee-a618-285fd397e461" type="instrument">
+                            <target>05d83760-08b5-42bb-a8d7-00d80b3bf47c</target>
+                            <direction>backward</direction>
+                            <attribute-list>
+                                <attribute credited-as="crazy guitar" type-id="63021302-86cd-4aee-80df-2270d54f4978">guitar</attribute>
+                            </attribute-list>
+                            <artist id="05d83760-08b5-42bb-a8d7-00d80b3bf47c" type="Person" type-id="b6e035f4-3ce9-331c-97df-83397230b0df">
+                                <name>Paul Allgood</name>
+                                <sort-name>Allgood, Paul</sort-name>
+                            </artist>
+                            </relation>
+                        </relation-list>
+                    </recording>
+                </track>
+                <track id="e9f7ca98-ba9d-3276-97a4-26475c9f4527">
+                    <position>2</position>
+                    <number>2</number>
+                    <length>240400</length>
+                    <recording id="c830c239-3f91-4485-9577-4b86f92ad725">
+                        <title>2 X 4</title>
+                        <length>240400</length>
+                    </recording>
+                </track>
+                </track-list>
+            </medium>
+            </medium-list>
+        </release>
+    </release-list>
+</metadata>';
+
 ws_test 'browse releases via track artist, including RGs and ratings',
     '/release?track_artist=a16d1433-ba89-4f72-a47b-a370add0bb55&inc=release-groups+ratings' =>
     '<?xml version="1.0"?>
