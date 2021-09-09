@@ -36,6 +36,7 @@ export type FilterFormT = $ReadOnly<{
 
 type Props = {
   +form: FilterFormT,
+  +showAllReleaseGroups?: boolean,
 };
 
 function getSubmitText(type: string) {
@@ -54,7 +55,10 @@ function getSubmitText(type: string) {
   return '';
 }
 
-const FilterForm = ({form}: Props): React$Element<'div'> => {
+const FilterForm = ({
+  form,
+  showAllReleaseGroups = false,
+}: Props): React$Element<'div'> => {
   const typeIdField = form.field.type_id;
   const typeIdOptions = form.options_type_id;
   const secondaryTypeIdField = form.field.secondary_type_id;
@@ -252,6 +256,10 @@ const FilterForm = ({form}: Props): React$Element<'div'> => {
                 </td>
               </tr>
             ) : null}
+
+            {showAllReleaseGroups
+              ? <input name="all" type="hidden" value="1" />
+              : null}
 
             <tr>
               <td />

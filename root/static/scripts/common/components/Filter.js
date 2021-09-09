@@ -17,9 +17,14 @@ import FilterForm, {type FilterFormT} from './FilterForm.js';
 type Props = {
   +ajaxFormUrl: string,
   +initialFilterForm: ?FilterFormT,
+  +showAllReleaseGroups?: boolean,
 };
 
-const Filter = ({ajaxFormUrl, initialFilterForm}: Props) => {
+const Filter = ({
+  ajaxFormUrl,
+  initialFilterForm,
+  showAllReleaseGroups,
+}: Props) => {
   const [filterForm, setFilterForm] = React.useState<?FilterFormT>(
     initialFilterForm,
   );
@@ -66,7 +71,10 @@ const Filter = ({ajaxFormUrl, initialFilterForm}: Props) => {
       </div>
 
       {(filterForm && !hidden) ? (
-        <FilterForm form={filterForm} />
+        <FilterForm
+          form={filterForm}
+          showAllReleaseGroups={showAllReleaseGroups}
+        />
       ) : null}
     </>
   );
