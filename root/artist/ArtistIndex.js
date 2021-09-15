@@ -285,6 +285,7 @@ const ArtistIndex = ({
         ajaxFormUrl={ajaxFilterFormUrl}
         initialFilterForm={filterForm}
         showAllReleaseGroups={includingAllStatuses}
+        showVAReleaseGroups={showingVariousArtistsOnly}
       />
 
       {existingReleaseGroups ? (

@@ -18,12 +18,14 @@ type Props = {
   +ajaxFormUrl: string,
   +initialFilterForm: ?FilterFormT,
   +showAllReleaseGroups?: boolean,
+  +showVAReleaseGroups?: boolean,
 };
 
 const Filter = ({
   ajaxFormUrl,
   initialFilterForm,
   showAllReleaseGroups,
+  showVAReleaseGroups,
 }: Props) => {
   const [filterForm, setFilterForm] = React.useState<?FilterFormT>(
     initialFilterForm,
@@ -74,6 +76,7 @@ const Filter = ({
         <FilterForm
           form={filterForm}
           showAllReleaseGroups={showAllReleaseGroups}
+          showVAReleaseGroups={showVAReleaseGroups}
         />
       ) : null}
     </>
