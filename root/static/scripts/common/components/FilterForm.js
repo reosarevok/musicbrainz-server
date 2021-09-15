@@ -36,6 +36,7 @@ export type FilterFormT = $ReadOnly<{
 
 type Props = {
   +form: FilterFormT,
+  +showACDroppedMessage?: boolean,
   +showAllReleaseGroups?: boolean,
   +showVAReleaseGroups?: boolean,
 };
@@ -58,6 +59,7 @@ function getSubmitText(type: string) {
 
 const FilterForm = ({
   form,
+  showACDroppedMessage = false,
   showAllReleaseGroups = false,
   showVAReleaseGroups = false,
 }: Props): React$Element<'div'> => {
@@ -77,6 +79,7 @@ const FilterForm = ({
   const statusIdOptions = form.options_status_id;
   const statusIdField = form.field.status_id;
   const setlistField = form.field.setlist;
+  const showArtistCreditForm = artistCreditIdField && artistCreditIdOptions;
 
   return (
     <div id="filter">
@@ -118,7 +121,7 @@ const FilterForm = ({
               </tr>
             ) : null}
 
-            {artistCreditIdField && artistCreditIdOptions ? (
+            {showArtistCreditForm ? (
               <tr>
                 <td>
                   {addColonText(l('Artist credit'))}
@@ -133,6 +136,19 @@ const FilterForm = ({
                     style={{maxWidth: '40em'}}
                     uncontrolled
                   />
+                </td>
+              </tr>
+            ) : null}
+
+            {showACDroppedMessage && showArtistCreditForm ? (
+              <tr>
+                <td />
+                <td>
+                  {exp.l(
+                    `<strong>Warning:</strong> The artist credit filter
+                     was dropped because the list of available artist credits
+                     may not be the same as on the previous page.`,
+                  )}
                 </td>
               </tr>
             ) : null}

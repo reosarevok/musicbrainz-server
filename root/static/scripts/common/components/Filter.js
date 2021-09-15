@@ -17,6 +17,7 @@ import FilterForm, {type FilterFormT} from './FilterForm.js';
 type Props = {
   +ajaxFormUrl: string,
   +initialFilterForm: ?FilterFormT,
+  +showACDroppedMessage?: boolean,
   +showAllReleaseGroups?: boolean,
   +showVAReleaseGroups?: boolean,
 };
@@ -24,6 +25,7 @@ type Props = {
 const Filter = ({
   ajaxFormUrl,
   initialFilterForm,
+  showACDroppedMessage,
   showAllReleaseGroups,
   showVAReleaseGroups,
 }: Props) => {
@@ -75,6 +77,7 @@ const Filter = ({
       {(filterForm && !hidden) ? (
         <FilterForm
           form={filterForm}
+          showACDroppedMessage={showACDroppedMessage}
           showAllReleaseGroups={showAllReleaseGroups}
           showVAReleaseGroups={showVAReleaseGroups}
         />
