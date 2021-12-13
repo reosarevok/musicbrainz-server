@@ -14,4 +14,18 @@ CREATE TYPE fluency AS ENUM (
 
 CREATE TYPE oauth_code_challenge_method AS ENUM ('plain', 'S256');
 
+CREATE TYPE taggable_entity_type AS ENUM (
+    'area',
+    'artist',
+    'event',
+    'instrument',
+    'label',
+    'place',
+    'recording',
+    'release',
+    'release_group',
+    'series',
+    'work'
+);
+
 COMMIT;
