@@ -31,11 +31,13 @@ const AttributeList = ({modelList}: {modelList: Array<string>}) => {
 };
 
 type Props = {
+  +aliasTypeModels: Array<string>,
   +entityTypeModels: Array<string>,
   +otherModels: Array<string>,
 };
 
 const AttributesList = ({
+  aliasTypeModels,
   entityTypeModels,
   otherModels,
 }: Props): React$Element<typeof Layout> => (
@@ -44,6 +46,9 @@ const AttributesList = ({
 
     <h2>{l('Entity types')}</h2>
     <AttributeList modelList={entityTypeModels} />
+
+    <h2>{l('Alias types')}</h2>
+    <AttributeList modelList={aliasTypeModels} />
 
     <h2>{l('Other attributes')}</h2>
     <AttributeList modelList={otherModels} />
