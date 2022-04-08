@@ -94,7 +94,7 @@ sub attribute_index : Chained('attribute_base') PathPart('') {
     );
 }
 
-sub create : Chained('attribute_base') RequireAuth(account_admin) SecureForm {
+sub create : Chained('attribute_base') RequireAuth(relationship_editor) SecureForm {
     my ($self, $c) = @_;
     my $model = $c->stash->{model};
 
@@ -115,7 +115,7 @@ sub create : Chained('attribute_base') RequireAuth(account_admin) SecureForm {
     }
 }
 
-sub edit : Chained('attribute_base') Args(1) RequireAuth(account_admin) SecureForm {
+sub edit : Chained('attribute_base') Args(1) RequireAuth(relationship_editor) SecureForm {
     my ($self, $c, $id) = @_;
     my $model = $c->stash->{model};
     my $attr = $c->model($model)->get_by_id($id);
@@ -137,7 +137,7 @@ sub edit : Chained('attribute_base') Args(1) RequireAuth(account_admin) SecureFo
     }
 }
 
-sub delete : Chained('attribute_base') Args(1) RequireAuth(account_admin) SecureForm {
+sub delete : Chained('attribute_base') Args(1) RequireAuth(relationship_editor) SecureForm {
     my ($self, $c, $id) = @_;
     my $model = $c->stash->{model};
     my $attr = $c->model($model)->get_by_id($id)
