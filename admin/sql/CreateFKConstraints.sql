@@ -464,6 +464,17 @@ ALTER TABLE edit_label
    REFERENCES label(id)
    ON DELETE CASCADE;
 
+ALTER TABLE edit_mood
+   ADD CONSTRAINT edit_mood_fk_edit
+   FOREIGN KEY (edit)
+   REFERENCES edit(id);
+
+ALTER TABLE edit_mood
+   ADD CONSTRAINT edit_mood_fk_mood
+   FOREIGN KEY (mood)
+   REFERENCES mood(id)
+   ON DELETE CASCADE;
+
 ALTER TABLE edit_note
    ADD CONSTRAINT edit_note_fk_editor
    FOREIGN KEY (editor)
@@ -1242,6 +1253,21 @@ ALTER TABLE l_area_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_area_mood
+   ADD CONSTRAINT l_area_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_area_mood
+   ADD CONSTRAINT l_area_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES area(id);
+
+ALTER TABLE l_area_mood
+   ADD CONSTRAINT l_area_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_area_place
    ADD CONSTRAINT l_area_place_fk_link
    FOREIGN KEY (link)
@@ -1422,6 +1448,21 @@ ALTER TABLE l_artist_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_artist_mood
+   ADD CONSTRAINT l_artist_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_artist_mood
+   ADD CONSTRAINT l_artist_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES artist(id);
+
+ALTER TABLE l_artist_mood
+   ADD CONSTRAINT l_artist_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_artist_place
    ADD CONSTRAINT l_artist_place_fk_link
    FOREIGN KEY (link)
@@ -1587,6 +1628,21 @@ ALTER TABLE l_event_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_event_mood
+   ADD CONSTRAINT l_event_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_event_mood
+   ADD CONSTRAINT l_event_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES event(id);
+
+ALTER TABLE l_event_mood
+   ADD CONSTRAINT l_event_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_event_place
    ADD CONSTRAINT l_event_place_fk_link
    FOREIGN KEY (link)
@@ -1737,6 +1793,21 @@ ALTER TABLE l_genre_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_genre_mood
+   ADD CONSTRAINT l_genre_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_genre_mood
+   ADD CONSTRAINT l_genre_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES genre(id);
+
+ALTER TABLE l_genre_mood
+   ADD CONSTRAINT l_genre_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_genre_place
    ADD CONSTRAINT l_genre_place_fk_link
    FOREIGN KEY (link)
@@ -1872,6 +1943,21 @@ ALTER TABLE l_instrument_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_instrument_mood
+   ADD CONSTRAINT l_instrument_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_instrument_mood
+   ADD CONSTRAINT l_instrument_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES instrument(id);
+
+ALTER TABLE l_instrument_mood
+   ADD CONSTRAINT l_instrument_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_instrument_place
    ADD CONSTRAINT l_instrument_place_fk_link
    FOREIGN KEY (link)
@@ -1992,6 +2078,21 @@ ALTER TABLE l_label_label
    FOREIGN KEY (entity1)
    REFERENCES label(id);
 
+ALTER TABLE l_label_mood
+   ADD CONSTRAINT l_label_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_label_mood
+   ADD CONSTRAINT l_label_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES label(id);
+
+ALTER TABLE l_label_mood
+   ADD CONSTRAINT l_label_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
 ALTER TABLE l_label_place
    ADD CONSTRAINT l_label_place_fk_link
    FOREIGN KEY (link)
@@ -2094,6 +2195,126 @@ ALTER TABLE l_label_work
 
 ALTER TABLE l_label_work
    ADD CONSTRAINT l_label_work_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES work(id);
+
+ALTER TABLE l_mood_mood
+   ADD CONSTRAINT l_mood_mood_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_mood
+   ADD CONSTRAINT l_mood_mood_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_mood
+   ADD CONSTRAINT l_mood_mood_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_place
+   ADD CONSTRAINT l_mood_place_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_place
+   ADD CONSTRAINT l_mood_place_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_place
+   ADD CONSTRAINT l_mood_place_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES place(id);
+
+ALTER TABLE l_mood_recording
+   ADD CONSTRAINT l_mood_recording_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_recording
+   ADD CONSTRAINT l_mood_recording_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_recording
+   ADD CONSTRAINT l_mood_recording_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES recording(id);
+
+ALTER TABLE l_mood_release
+   ADD CONSTRAINT l_mood_release_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_release
+   ADD CONSTRAINT l_mood_release_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_release
+   ADD CONSTRAINT l_mood_release_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES release(id);
+
+ALTER TABLE l_mood_release_group
+   ADD CONSTRAINT l_mood_release_group_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_release_group
+   ADD CONSTRAINT l_mood_release_group_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_release_group
+   ADD CONSTRAINT l_mood_release_group_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES release_group(id);
+
+ALTER TABLE l_mood_series
+   ADD CONSTRAINT l_mood_series_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_series
+   ADD CONSTRAINT l_mood_series_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_series
+   ADD CONSTRAINT l_mood_series_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES series(id);
+
+ALTER TABLE l_mood_url
+   ADD CONSTRAINT l_mood_url_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_url
+   ADD CONSTRAINT l_mood_url_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_url
+   ADD CONSTRAINT l_mood_url_fk_entity1
+   FOREIGN KEY (entity1)
+   REFERENCES url(id);
+
+ALTER TABLE l_mood_work
+   ADD CONSTRAINT l_mood_work_fk_link
+   FOREIGN KEY (link)
+   REFERENCES link(id);
+
+ALTER TABLE l_mood_work
+   ADD CONSTRAINT l_mood_work_fk_entity0
+   FOREIGN KEY (entity0)
+   REFERENCES mood(id);
+
+ALTER TABLE l_mood_work
+   ADD CONSTRAINT l_mood_work_fk_entity1
    FOREIGN KEY (entity1)
    REFERENCES work(id);
 
@@ -2795,6 +3016,31 @@ ALTER TABLE medium_index
    FOREIGN KEY (medium)
    REFERENCES medium(id)
    ON DELETE CASCADE;
+
+ALTER TABLE mood_alias
+   ADD CONSTRAINT mood_alias_fk_mood
+   FOREIGN KEY (mood)
+   REFERENCES mood(id);
+
+ALTER TABLE mood_alias
+   ADD CONSTRAINT mood_alias_fk_type
+   FOREIGN KEY (type)
+   REFERENCES mood_alias_type(id);
+
+ALTER TABLE mood_alias_type
+   ADD CONSTRAINT mood_alias_type_fk_parent
+   FOREIGN KEY (parent)
+   REFERENCES mood_alias_type(id);
+
+ALTER TABLE mood_annotation
+   ADD CONSTRAINT mood_annotation_fk_mood
+   FOREIGN KEY (mood)
+   REFERENCES mood(id);
+
+ALTER TABLE mood_annotation
+   ADD CONSTRAINT mood_annotation_fk_annotation
+   FOREIGN KEY (annotation)
+   REFERENCES annotation(id);
 
 ALTER TABLE orderable_link_type
    ADD CONSTRAINT orderable_link_type_fk_link_type
