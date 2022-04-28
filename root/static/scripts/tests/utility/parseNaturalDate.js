@@ -14,6 +14,7 @@ import parseNaturalDate from '../../common/utility/parseNaturalDate.js';
 test('parseNaturalDate', function (t) {
   t.plan(7);
 
+  /* eslint-disable sort-keys */
   const parseDateTests = [
     // Nothing
     {date: '', expected: {year: '', month: '', day: ''}},
@@ -28,6 +29,7 @@ test('parseNaturalDate', function (t) {
     {date: '1999 01 02', expected: {year: '1999', month: '01', day: '02'}},
     {date: '1999 01', expected: {year: '1999', month: '01', day: ''}},
   ];
+  /* eslint-enable sort-keys */
 
   for (const test of parseDateTests) {
     const result = parseNaturalDate(test.date);
