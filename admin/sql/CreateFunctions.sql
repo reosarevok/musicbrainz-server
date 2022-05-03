@@ -1094,7 +1094,7 @@ CREATE OR REPLACE FUNCTION set_release_first_release_date(release_id INTEGER)
 RETURNS VOID AS $$
 BEGIN
   -- DO NOT modify any replicated tables in this function; it's used
-  -- by a trigger on slaves.
+  -- by a trigger on mirrors.
   DELETE FROM release_first_release_date
   WHERE release = release_id;
 
@@ -1156,7 +1156,7 @@ CREATE OR REPLACE FUNCTION set_recordings_first_release_dates(recording_ids INTE
 RETURNS VOID AS $$
 BEGIN
   -- DO NOT modify any replicated tables in this function; it's used
-  -- by a trigger on slaves.
+  -- by a trigger on mirrors.
   DELETE FROM recording_first_release_date
   WHERE recording = ANY(recording_ids);
 
@@ -1328,6 +1328,8 @@ BEGIN
     SELECT entity1 FROM l_artist_url
     EXCEPT
     SELECT entity1 FROM l_event_url
+    EXCEPT
+    SELECT entity1 FROM l_genre_url
     EXCEPT
     SELECT entity1 FROM l_instrument_url
     EXCEPT
@@ -1700,7 +1702,7 @@ DECLARE
     release_id INTEGER;
 BEGIN
     -- DO NOT modify any replicated tables in this function; it's used
-    -- by a trigger on slaves.
+    -- by a trigger on mirrors.
     WITH pending AS (
         DELETE FROM artist_release_pending_update
         RETURNING release
@@ -1793,7 +1795,7 @@ DECLARE
     release_group_id INTEGER;
 BEGIN
     -- DO NOT modify any replicated tables in this function; it's used
-    -- by a trigger on slaves.
+    -- by a trigger on mirrors.
     WITH pending AS (
         DELETE FROM artist_release_group_pending_update
         RETURNING release_group
