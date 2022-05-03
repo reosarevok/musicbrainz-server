@@ -3584,11 +3584,6 @@ ALTER TABLE series
    REFERENCES series_type(id);
 
 ALTER TABLE series
-   ADD CONSTRAINT series_fk_ordering_attribute
-   FOREIGN KEY (ordering_attribute)
-   REFERENCES link_text_attribute_type(attribute_type);
-
-ALTER TABLE series
    ADD CONSTRAINT series_fk_ordering_type
    FOREIGN KEY (ordering_type)
    REFERENCES series_ordering_type(id);
