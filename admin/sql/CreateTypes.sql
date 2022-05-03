@@ -21,7 +21,7 @@ CREATE TYPE ratable_entity_type AS ENUM (
     'place',
     'recording',
     'release_group',
-    'work',
+    'work'
 );
 
 CREATE TYPE taggable_entity_type AS ENUM (
