@@ -90,21 +90,6 @@ ALTER TABLE l_instrument_mood
    FOREIGN KEY (entity1)
    REFERENCES mood(id);
 
-ALTER TABLE l_instrument_mood
-   ADD CONSTRAINT l_instrument_mood_fk_link
-   FOREIGN KEY (link)
-   REFERENCES link(id);
-
-ALTER TABLE l_instrument_mood
-   ADD CONSTRAINT l_instrument_mood_fk_entity0
-   FOREIGN KEY (entity0)
-   REFERENCES instrument(id);
-
-ALTER TABLE l_instrument_mood
-   ADD CONSTRAINT l_instrument_mood_fk_entity1
-   FOREIGN KEY (entity1)
-   REFERENCES mood(id);
-
 ALTER TABLE l_label_mood
    ADD CONSTRAINT l_label_mood_fk_link
    FOREIGN KEY (link)
