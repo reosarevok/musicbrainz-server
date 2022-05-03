@@ -10,6 +10,9 @@
 -- 20220314-mbs-12254-standalone.sql
 -- 20220314-mbs-12255-standalone.sql
 -- 20220426-mbs-12131.sql
+-- 20220408-immutable-link-tables-standalone.sql
+-- 20220408-mbs-12249-standalone.sql
+-- 20220426-mbs-112131.sql
 \set ON_ERROR_STOP 1
 BEGIN;
 SET search_path = musicbrainz, public;
@@ -1026,6 +1029,88 @@ DROP AGGREGATE IF EXISTS median(anyelement);
 CREATE OR REPLACE AGGREGATE median(INTEGER) (
   SFUNC=array_append,
   STYPE=INTEGER[],
+  FINALFUNC=_median,
+  INITCOND='{}'
+);
+
+DROP AGGREGATE IF EXISTS array_accum(anyelement);
+
+DROP AGGREGATE IF EXISTS array_cat_agg(anyarray);
+
+CREATE OR REPLACE AGGREGATE array_cat_agg(int2[]) (
+      sfunc       = array_cat,
+      stype       = int2[],
+      initcond    = '{}'
+);
+
+--------------------------------------------------------------------------------
+SELECT '20220408-immutable-link-tables-standalone.sql';
+
+
+CREATE OR REPLACE TRIGGER deny_deprecated BEFORE INSERT ON link
+    FOR EACH ROW EXECUTE PROCEDURE deny_deprecated_links();
+
+CREATE OR REPLACE TRIGGER b_upd_link BEFORE UPDATE ON link
+    FOR EACH ROW EXECUTE PROCEDURE b_upd_link();
+
+CREATE OR REPLACE TRIGGER b_ins_link_attribute BEFORE INSERT ON link_attribute
+    FOR EACH ROW EXECUTE PROCEDURE prevent_invalid_attributes();
+
+CREATE OR REPLACE TRIGGER b_upd_link_attribute BEFORE UPDATE ON link_attribute
+    FOR EACH ROW EXECUTE PROCEDURE b_upd_link_attribute();
+
+CREATE OR REPLACE TRIGGER b_upd_link_attribute_credit BEFORE UPDATE ON link_attribute_credit
+    FOR EACH ROW EXECUTE PROCEDURE b_upd_link_attribute_credit();
+
+CREATE OR REPLACE TRIGGER b_upd_link_attribute_text_value BEFORE UPDATE ON link_attribute_text_value
+    FOR EACH ROW EXECUTE PROCEDURE b_upd_link_attribute_text_value();
+
+--------------------------------------------------------------------------------
+SELECT '20220408-mbs-12249-standalone.sql';
+
+
+ALTER TABLE area_containment
+   ADD CONSTRAINT area_containment_fk_descendant
+   FOREIGN KEY (descendant)
+   REFERENCES area(id);
+
+ALTER TABLE area_containment
+   ADD CONSTRAINT area_containment_fk_parent
+   FOREIGN KEY (parent)
+   REFERENCES area(id);
+
+CREATE OR REPLACE TRIGGER a_ins_l_area_area AFTER INSERT ON l_area_area
+    FOR EACH ROW EXECUTE PROCEDURE a_ins_l_area_area_mirror();
+
+CREATE OR REPLACE TRIGGER a_upd_l_area_area AFTER UPDATE ON l_area_area
+    FOR EACH ROW EXECUTE PROCEDURE a_upd_l_area_area_mirror();
+
+CREATE OR REPLACE TRIGGER a_del_l_area_area AFTER DELETE ON l_area_area
+    FOR EACH ROW EXECUTE PROCEDURE a_del_l_area_area_mirror();
+
+--------------------------------------------------------------------------------
+SELECT '20220426-mbs-112131.sql';
+
+
+CREATE OR REPLACE FUNCTION _median(NUMERIC[]) RETURNS NUMERIC AS $$
+  WITH q AS (
+      SELECT val
+      FROM unnest($1) val
+      WHERE VAL IS NOT NULL
+      ORDER BY val
+  )
+  SELECT val
+  FROM q
+  LIMIT 1
+  -- Subtracting (n + 1) % 2 creates a left bias
+  OFFSET greatest(0, floor((select count(*) FROM q) / 2.0) - ((select count(*) + 1 FROM q) % 2));
+$$ LANGUAGE sql IMMUTABLE;
+
+DROP AGGREGATE IF EXISTS median(anyelement);
+
+CREATE OR REPLACE AGGREGATE median(NUMERIC) (
+  SFUNC=array_append,
+  STYPE=NUMERIC[],
   FINALFUNC=_median,
   INITCOND='{}'
 );
