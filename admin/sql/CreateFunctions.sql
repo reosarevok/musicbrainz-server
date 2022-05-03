@@ -1332,6 +1332,8 @@ BEGIN
     EXCEPT
     SELECT entity1 FROM l_label_url
     EXCEPT
+    SELECT entity1 FROM l_mood_url
+    EXCEPT
     SELECT entity1 FROM l_place_url
     EXCEPT
     SELECT entity1 FROM l_recording_url
