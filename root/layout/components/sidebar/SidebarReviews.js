@@ -9,7 +9,9 @@
 
 import * as React from 'react';
 
-import CritiqueBrainzLinks from '../../../components/CritiqueBrainzLinks.js';
+import * as manifest from '../../../static/manifest.mjs';
+import CritiqueBrainzLinks
+  from '../../../static/scripts/common/components/CritiqueBrainzLinks.js';
 
 type Props = {
   +entity: ReviewableT,
@@ -22,9 +24,8 @@ const SidebarReviews = ({
 }: Props): React.Element<typeof React.Fragment> => (
   <>
     <h2 className="reviews">{nonEmpty(heading) ? heading : l('Reviews')}</h2>
-    <p>
-      <CritiqueBrainzLinks entity={entity} />
-    </p>
+    <CritiqueBrainzLinks entity={entity} />
+    {manifest.js('reviews', {async: 'async'})}
   </>
 );
 
