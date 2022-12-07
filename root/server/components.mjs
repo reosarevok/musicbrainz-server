@@ -79,6 +79,7 @@ export default {
   'artist/ArtistWorks': (): Promise<mixed> => import('../artist/ArtistWorks.js'),
   'artist/CannotSplit': (): Promise<mixed> => import('../artist/CannotSplit.js'),
   'artist/SpecialPurpose': (): Promise<mixed> => import('../artist/SpecialPurpose.js'),
+  'artist/Split': (): Promise<mixed> => import('../artist/Split.js'),
   'artist_credit/ArtistCreditIndex': (): Promise<mixed> => import('../artist_credit/ArtistCreditIndex.js'),
   'artist_credit/EntityList': (): Promise<mixed> => import('../artist_credit/EntityList.js'),
   'cdstub/CDStubAddWhileLoggedIn': (): Promise<mixed> => import('../cdstub/CDStubAddWhileLoggedIn.js'),
