@@ -648,6 +648,17 @@ sub edit_cover_art : Chained('load') PathPart('edit-cover-art') Args(1) Edit {
         $c->response->redirect($c->uri_for_action('/release/cover_art', [ $entity->gid ]));
         $c->detach;
     }
+
+    $c->stash(
+        current_view => 'Node',
+        component_path => 'release/EditCoverArt.js',
+        component_props => {
+            artwork => $artwork->TO_JSON,
+            form => $c->stash->{form}->TO_JSON,
+            release => $entity->TO_JSON,
+            typeIdOptions => $form->options_type_id,
+        }
+    );
 }
 
 sub remove_cover_art : Chained('load') PathPart('remove-cover-art') Args(1) Edit {

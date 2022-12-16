@@ -16,10 +16,10 @@ import FormRowTextLong
 
 type Props = {
   +form: FormT<{
-    +comment: FieldT<string | null>,
-    +nonce: FieldT<string>,
-    +position?: FieldT<number>,
-    +type_id: FieldT<Array<StrOrNum>>,
+    +comment: ReadOnlyFieldT<string | null>,
+    +nonce?: ReadOnlyFieldT<string>,
+    +position?: ReadOnlyFieldT<number>,
+    +type_id: ReadOnlyFieldT<Array<StrOrNum>>,
     ...
   }>,
   +typeIdOptions: SelectOptionsT,
