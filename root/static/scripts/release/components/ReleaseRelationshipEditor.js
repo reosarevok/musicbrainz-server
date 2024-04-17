@@ -950,7 +950,7 @@ export const reducer: ((
             ];
             relationshipWithNewSource.id = uniqueNegativeId();
             relationshipWithNewSource[sourceEntityProp] = newSource;
-            yield *getUpdatesForAcceptedRelationship(
+            yield* getUpdatesForAcceptedRelationship(
               newState,
               relationshipWithNewSource,
               newSource,
