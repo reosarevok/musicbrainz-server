@@ -248,8 +248,7 @@ component Images(
                 </tr>
               ))}
             </tbody>
-          </table>)
-      }
+          </table>)}
       <h2>{l_statistics('Release groups')}</h2>
       <table className="database-statistics">
         <tbody>
