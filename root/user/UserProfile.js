@@ -117,7 +117,7 @@ function generateUserTypesList(
 }
 
 component UserProfileProperty(
-  children: React$Node,
+  children: React.Node,
   className?: string,
   name: string,
 ) {
