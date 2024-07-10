@@ -9,6 +9,7 @@ use Carp qw( croak );
 use CGI::Simple::Util qw( escape );
 use DBDefs;
 use Devel::StackTrace;
+use Encode qw( decode );
 use English;
 use IO::File;
 use Scalar::Util qw( blessed );
@@ -134,10 +135,10 @@ sub sig_die_handler {
         $sentry_frames{sentry_frames} = [reverse @included_frames];
     }
 
-    $stack_traces->{$message} = {
-        as_string => $stacktrace->as_string(max_arg_length => 0),
-        %sentry_frames,
-    };
+        $stack_traces->{$message} = {
+            as_string => decode('utf-8', $stacktrace->as_string(max_arg_length => 0)),
+            %sentry_frames,
+        };
 }
 
 our $sentry;
