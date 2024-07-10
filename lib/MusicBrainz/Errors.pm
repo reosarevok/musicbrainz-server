@@ -135,10 +135,16 @@ sub sig_die_handler {
         $sentry_frames{sentry_frames} = [reverse @included_frames];
     }
 
-        $stack_traces->{$message} = {
-            as_string => decode('utf-8', $stacktrace->as_string(max_arg_length => 0)),
-            %sentry_frames,
-        };
+    my $stack_trace_string = $stacktrace->as_string(max_arg_length => 0);
+
+    eval {
+        $stack_trace_string = decode('utf-8', $stack_trace_string);
+    };
+
+    $stack_traces->{$message} = {
+        as_string => $stack_trace_string,
+        %sentry_frames,
+    };
 }
 
 our $sentry;
