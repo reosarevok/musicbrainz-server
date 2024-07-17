@@ -55,7 +55,7 @@ sub _build_conn
             my $exception = 'MusicBrainz::Server::Exceptions::DatabaseError';
             $exception .= '::StatementTimedOut'
                 if $state eq '57014';
-           $exception->throw( sqlstate => $state, message => $msg );
+            $exception->throw( sqlstate => $state, message => $msg );
         },
         RaiseError        => 0,
         PrintError        => 0,
