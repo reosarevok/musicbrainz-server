@@ -14,12 +14,12 @@ import DBDefs from './DBDefs-client.mjs';
 const {user} = getScriptArgs();
 
 Sentry.init({
+  allowUrls: [
+    new RegExp(DBDefs.STATIC_RESOURCES_LOCATION + '/.+\\.js$'),
+  ],
   dsn: DBDefs.SENTRY_DSN_PUBLIC,
   environment: DBDefs.GIT_BRANCH,
   release: DBDefs.GIT_SHA,
-  whitelistUrls: [
-    new RegExp(DBDefs.STATIC_RESOURCES_LOCATION + '/.+\\.js$'),
-  ],
 });
 
 if (user && user.id) {
