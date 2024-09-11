@@ -75,6 +75,7 @@ const entries = [
   'place/edit',
   'place/index',
   'place/map',
+  'recording/components/RecordingEditForm',
   'recording/edit',
   'relationship-editor',
   'release/coverart',
