@@ -410,7 +410,7 @@ releaseEditor.loadRelease = function (gid, callback) {
       // If there wasn't an ISE, the response should parse as JSON.
       try {
         error += ': ' + JSON.parse(jqXHR.responseText).error;
-      } catch (e) {}
+      } catch (ignoredError) {}
 
       this.loadError(error);
     });
