@@ -164,6 +164,16 @@ role
                     );
                 }
 
+                my $link_and_target_types = $relationships->{typed_subset}{$action};
+                if ($link_and_target_types) {
+                    for my $target_type (keys %$link_and_target_types) {
+                        $c->model('Relationship')->load_subset(
+                            target_types => [$target_type],
+                            link_types => $link_and_target_types->{$target_type},
+                            source_objs => [$entity],
+                        );
+                    }
+                }
             }
         }
 

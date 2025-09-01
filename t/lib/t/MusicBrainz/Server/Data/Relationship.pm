@@ -361,15 +361,17 @@ test 'Only appropriate rels are loaded with load_subset' => sub {
     my $c = $test->c;
 
     MusicBrainz::Server::Test->prepare_test_database($test->c, '+relationships');
-    # Insert extra link to different entity (series)
+    # Insert extra link of different type (remix) and to different entity (series)
     MusicBrainz::Server::Test->prepare_test_database($c, <<~'EOSQL');
+        INSERT INTO link (id, link_type, attribute_count) VALUES (6, 157, 0);
+        INSERT INTO l_artist_recording (id, link, entity0, entity1) VALUES (4, 6, 1, 2);
         INSERT INTO l_artist_series (id, link, entity0, entity1, link_order) VALUES (2, 5, 1, 1, 1);
         EOSQL
 
     my $artist = $c->model('Artist')->get_by_id(1);
 
     $test->c->model('Relationship')->load($artist);
-    is(scalar($artist->all_relationships), 3, 'There are 3 rels');
+    is(scalar($artist->all_relationships), 4, 'There are 4 rels');
 
     $artist->clear_relationships;
 
@@ -377,8 +379,16 @@ test 'Only appropriate rels are loaded with load_subset' => sub {
         target_types => [ 'recording' ],
         source_objs => [ $artist ],
     );
-    is(scalar($artist->all_relationships), 2, 'There are 2 artist rels');
+    is(scalar($artist->all_relationships), 3, 'There are 3 artist rels');
 
+    $artist->clear_relationships;
+
+    $test->c->model('Relationship')->load_subset(
+        target_types => [ 'recording' ],
+        link_types => [ '59054b12-01ac-43ee-a618-285fd397e461' ],
+        source_objs => [ $artist ],
+    );
+    is(scalar($artist->all_relationships), 2, 'There are 2 artist rels of type instrument');
 };
 
 test all => sub {
